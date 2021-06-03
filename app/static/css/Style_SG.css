@@ -1,0 +1,351 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.wrapper {
+    max-width: 1300px;
+    background-color: black;
+    margin: 0 auto;
+}
+
+.clearfix::after {
+    content: '';
+    display: block;
+    clear: both;
+}
+
+.title {
+    text-align: center;
+    letter-spacing: 5px;
+    font-family: arial, sans-serif;
+    background-color: white;
+    height: 100px;
+    line-height: 100px;
+    border: solid 5px black;
+    background-image: url(../example_pictures//beach-2213623_1280.jpg)
+}
+
+nav {
+    background-color: black;
+    padding: 10px 10px;
+    border: 2px solid gold;
+
+
+}
+
+nav ul {
+    list-style: none;
+}
+
+nav ul li {
+    float: left;
+
+}
+
+nav ul li a {
+    display: block;
+    padding: 10px 30px;
+    text-decoration: none;
+    font-size: 20px;
+    font-family: arial, sans-serif;
+    color: white;
+    border: solid 2px gold;
+    margin: 10px;
+    text-align: center;
+
+
+}
+
+
+.Login_button {
+    display: block;
+    padding: 10px 30px;
+    text-decoration: none;
+    background-color: black;
+    font-size: 20px;
+    font-family: arial, sans-serif;
+    color: white;
+    border: solid 2px gold;
+    margin: 10px;
+    text-align: center;
+    float: right;
+    text-transform: uppercase;
+    font-weight: 600;
+
+
+}
+
+nav ul li a:hover {
+    color: aliceblue;
+    border-color: aliceblue;
+    transition-delay: 0.1s;
+
+}
+
+.Login_button:hover {
+    color: aliceblue;
+    border-color: aliceblue;
+    transition-delay: 0.1s;
+    cursor: pointer;
+}
+
+.modal {
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    /* Stay in place */
+    z-index: 1;
+    /* Sit on top */
+    padding-top: 100px;
+    /* Location of the box */
+    left: 25%;
+    top: 25%;
+    width: 50%;
+    /* Full width */
+    height: 100%;
+    /* Full height */
+    overflow: auto;
+    /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0);
+    /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: black;
+    margin: auto;
+    padding: 20px;
+    border: 4px solid gold;
+    width: 80%;
+}
+
+/* The Close Button */
+.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+label,
+.register_qustion {
+    display: block;
+    font-family: arial, sans-serif;
+    font-size: 20px;
+    color: white;
+    margin: 5px 10px;
+    text-align: left;
+}
+
+input:focus {
+    border: 2px solid gold;
+}
+
+.password,
+.username,
+.register_qustion {
+    width: 80%;
+    height: 20px;
+    margin-left: 12px;
+
+}
+
+.password_forget {
+    margin-bottom: 10px;
+    margin-top: 10px;
+
+}
+
+.check {
+    display: inline;
+    font-size: 15px;
+}
+
+.Next_Login_button {
+    display: block;
+    width: 80%;
+    height: 40px;
+    border: 2px solid gold;
+    color: white;
+    background-color: darkslategrey;
+    margin-top: 10px;
+    text-decoration: none;
+    text-align: center;
+    line-height: 40px;
+}
+
+.Next_Login_button:hover {
+    color: aliceblue;
+    border-color: aliceblue;
+    transition-delay: 0.1s;
+    cursor: pointer;
+}
+
+img {
+    width: 640px;
+    height: 420px;
+    margin: 10px 10px;
+    display: block;
+}
+
+.description {
+    margin-right: 20px;
+    border: solid 2px white;
+    float: right;
+    width: 600px;
+    height: 426px;
+}
+
+h4 {
+    font-size: 30px;
+    text-align: center;
+    color: white
+}
+
+.description p {
+    margin: 10px;
+    font-family: arial, sans-serif;
+    color: white;
+
+}
+
+/* Title slider */
+.intresting_place {
+    color: white;
+    font-family: arial, sans-serif;
+    text-align: center;
+    margin-top: 25px;
+    border: 2px solid gold;
+}
+
+/* Ułożenie obrazka */
+img {
+    vertical-align: middle;
+}
+
+/* Title slider */
+
+
+
+/* Slideshow container */
+.Slideshow_container {
+    width: 640px;
+    position: relative;
+    margin: auto;
+}
+
+/* Przyciski przwijania slidów */
+.prev,
+.next {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    width: auto;
+    padding: 16px;
+    margin-top: -22px;
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+    transition: 0.6s ease;
+    border-radius: 0 3px 3px 0;
+    user-select: none;
+}
+
+/* Position the "next button" to the right */
+.next {
+    right: 0;
+    border-radius: 3px 0 0 3px;
+}
+
+/* On hover, add a grey background color */
+.prev:hover,
+.next:hover {
+    background-color: #f1f1f1;
+    color: black;
+}
+
+/* Caption text */
+.text {
+    color: #f2f2f2;
+    font-size: 15px;
+    padding: 8px 12px;
+    position: absolute;
+    bottom: 8px;
+    width: 100%;
+    text-align: center;
+}
+
+/* Number text (1/3 etc) */
+.numbertext {
+    color: #f2f2f2;
+    font-size: 12px;
+    padding: 8px 12px;
+    position: absolute;
+    top: 0;
+}
+
+/* The dots/bullets/indicators */
+.dot {
+    cursor: pointer;
+    height: 15px;
+    width: 15px;
+    margin: 0 2px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    transition: background-color 0.6s ease;
+}
+
+.active,
+.dot:hover {
+    background-color: #717171;
+}
+
+/* Fading animation */
+.fade {
+    -webkit-animation-name: fade;
+    -webkit-animation-duration: 1.5s;
+    animation-name: fade;
+    animation-duration: 1.5s;
+}
+
+@-webkit-keyframes fade {
+    from {
+        opacity: .4
+    }
+
+    to {
+        opacity: 1
+    }
+}
+
+@keyframes fade {
+    from {
+        opacity: .4
+    }
+
+    to {
+        opacity: 1
+    }
+}
+
+/* On smaller screens, decrease text size */
+@media only screen and (max-width: 300px) {
+
+    .prev,
+    .next,
+    .text {
+        font-size: 11px
+    }
+}
