@@ -3,6 +3,7 @@ import psycopg2
 
 def create_tables():
     # Maciek!!! tutaj wewnątrz nawiasów wpisujesz kod SQL odpowiedzialny za stworzenie tabel,
+    # asdasdasd
     # tutaj stworzyłem tylko przykłądowa tabelę żebys mógł zobaczyc w jakis sposób
     commands = (
         """
