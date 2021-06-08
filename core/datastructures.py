@@ -1,56 +1,138 @@
 import attr
+import datetime
 
 
-@attr.s()
+@attr.s
 class Image:
     id: int = attr.ib()
     file_size: float = attr.ib()
     file_path: str = attr.ib()
+    file_extension: str = attr.ib()
 
 
-class User:
-    pass
-
-
-class Place:
-    pass
-
-
-class Interest:
-    pass
-
-
-class Attraction:
-    pass
-
-
-class Hotel:
-    pass
-
-
-class Weather:
-    pass
-
-
-class Visit:
-    pass
-
-
-class Post:
-    pass
-
-
+@attr.s
 class Video:
-    pass
+    id: int = attr.ib()
+    file_size: float = attr.ib()
+    file_path: str = attr.ib()
+    length: float = attr.ib()
+    file_extension: str = attr.ib()
 
 
+@attr.s
+class Weather:
+    date: datetime.datetime = attr.ib()
+    temperature: float = attr.ib()
+    humidity: float = attr.ib()
+    cloudy: float = attr.ib()
+    place_id: int = attr.ib()
+
+
+@attr.s
+class Attraction:
+    id: int = attr.ib()
+    type: str = attr.ib()
+    description: str = attr.ib()
+    price: float = attr.ib()
+    open_hours: str = attr.ib()
+    link: str = attr.ib()
+
+
+@attr.s
+class Address:
+    city: str = attr.ib()
+    postal_address: str = attr.ib()
+    street: str = attr.ib()
+    house_number: str = attr.ib()
+
+
+@attr.s
+class Hotel(Address):
+    id: int = attr.ib()
+    distance: float = attr.ib()
+    link: str = attr.ib()
+
+
+@attr.s
+class Communication(Address):
+    id: int = attr.ib()
+    distance: float = attr.ib()
+    link: str = attr.ib()
+    type: str = attr.ib()
+
+
+# TODO how to deal with situation when several hotels etc.
+@attr.s
+class Place(Hotel, Communication):
+    id: int = attr.ib()
+    create_date: datetime.datetime = attr.ib()
+    country: str = attr.ib()
+    region: str = attr.ib()
+    language: str = attr.ib()
+    coordinates: str = attr.ib()  # TODO check if there are coordinates data types
+    hotels_id: set = attr.ib()
+    communications_id: set = attr.ib()
+    attractions_id: set = attr.ib()
+
+
+@attr.s
+class Post:
+    id: int = attr.ib()
+    create_date: datetime.datetime = attr.ib()
+    text: str = attr.ib()
+    author_login: str = attr.ib()
+    photos_id: set = attr.ib()
+    videos_id: set = attr.ib()
+
+
+@attr.s
 class Comment:
-    pass
+    id: int = attr.ib()
+    create_date: datetime.datetime = attr.ib()
+    text: str = attr.ib()
+    author_login: str = attr.ib()
+    post_id: int = attr.ib()
 
 
-class Communication:
-    pass
+# TODO try smart way to do if it is from post or comment
+@attr.s
+class Reports:
+    id: int = attr.ib()
+    report_date: datetime.datetime = attr.ib()
+    reason: str = attr.ib()
+    author_login: str = attr.ib()
+    reporter_login: str = attr.ib()
 
 
-class Notification:
-    pass
+@attr.s
+class PostReport(Reports):
+    post_id: int = attr.ib()
+
+
+@attr.s
+class CommentReport(Reports):
+    comment_id: int = attr.ib()
+
+
+@attr.s
+class Visit:
+    arrival_date: datetime.datetime = attr.ib()
+    departure_date: datetime.datetime = attr.ib()
+    login: str = attr.ib()
+    post_id: int = attr.ib()
+
+
+@attr.s
+class User:
+    login: str = attr.ib()
+    password: str = attr.ib()
+    create_account_date: datetime.datetime = attr.ib()
+    email: str = attr.ib()
+    city: str = attr.ib()
+    country: str = attr.ib()
+
+
+@attr.s
+class Interest:
+    id: int = attr.ib()
+    type: str = attr.ib()
