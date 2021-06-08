@@ -7,6 +7,7 @@ class Image:
     id: int = attr.ib()
     file_size: float = attr.ib()
     file_path: str = attr.ib()
+    file_extension: str = attr.ib()
 
 
 @attr.s
@@ -19,19 +20,12 @@ class Video:
 
 
 @attr.s
-class Localization:
-    country: str = attr.ib()
-    region: str = attr.ib()
-    language: str = attr.ib()
-    coordinates: str = attr.ib()  # TODO check if there are coordinates data types
-
-
-@attr.s
 class Weather:
     date: datetime.datetime = attr.ib()
     temperature: float = attr.ib()
     humidity: float = attr.ib()
     cloudy: float = attr.ib()
+    place_id: int = attr.ib()
 
 
 @attr.s
@@ -69,9 +63,16 @@ class Communication(Address):
 
 # TODO how to deal with situation when several hotels etc.
 @attr.s
-class Place(Localization, Weather, Hotel, Communication):
+class Place(Hotel, Communication):
     id: int = attr.ib()
     create_date: datetime.datetime = attr.ib()
+    country: str = attr.ib()
+    region: str = attr.ib()
+    language: str = attr.ib()
+    coordinates: str = attr.ib()  # TODO check if there are coordinates data types
+    hotels_id: set = attr.ib()
+    communications_id: set = attr.ib()
+    attractions_id: set = attr.ib()
 
 
 @attr.s
@@ -80,6 +81,8 @@ class Post:
     create_date: datetime.datetime = attr.ib()
     text: str = attr.ib()
     author_login: str = attr.ib()
+    photos_id: set = attr.ib()
+    videos_id: set = attr.ib()
 
 
 @attr.s
@@ -103,14 +106,25 @@ class Reports:
     reporter_login: str = attr.ib()
 
 
+@attr.s
 class Visit:
-    pass
+    arrival_date: datetime.datetime = attr.ib()
+    departure_date: datetime.datetime = attr.ib()
+    login: str = attr.ib()
+    post_id: int = attr.ib()
 
 
+@attr.s
 class User:
-    pass
+    login: str = attr.ib()
+    password: str = attr.ib()
+    create_account_date: datetime.datetime = attr.ib()
+    email: str = attr.ib()
+    city: str = attr.ib()
+    country: str = attr.ib()
 
 
+@attr.s
 class Interest:
-    pass
-
+    id: int = attr.ib()
+    type: str = attr.ib()
