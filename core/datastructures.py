@@ -98,12 +98,20 @@ class Comment:
 @attr.s
 class Reports:
     id: int = attr.ib()
-    report_date = datetime.datetime = attr.ib()
+    report_date: datetime.datetime = attr.ib()
     reason: str = attr.ib()
-    post_id: int = attr.ib()
-    comment_id: int = attr.ib()
     author_login: str = attr.ib()
     reporter_login: str = attr.ib()
+
+
+@attr.s
+class PostReport(Reports):
+    post_id: int = attr.ib()
+
+
+@attr.s
+class CommentReport(Reports):
+    comment_id: int = attr.ib()
 
 
 @attr.s
