@@ -1,4 +1,5 @@
 import psycopg2
+import os
 
 
 def create_tables():
@@ -10,9 +11,8 @@ def create_tables():
         """
         CREATE TABLE photo (
             id_photo SERIAL PRIMARY KEY,
-            file_size REAL,
-            file_path VARCHAR(200),
-            file_photo BYTEA
+            file_size FLOAT,
+            file_path VARCHAR(200)
         )
         """,
         """
@@ -38,14 +38,6 @@ def create_tables():
         )
         """,
         """
-        CREATE TABLE weather (
-            weather_date DATE PRIMARY KEY,
-            cloudy VARCHAR(20) NOT NULL,
-            humidity REAL,
-            temperature REAL
-        )
-        """,
-        """
         CREATE TABLE attraction (
             id_attraction SERIAL PRIMARY KEY,
             id_photo INTEGER NOT NULL,
@@ -64,7 +56,6 @@ def create_tables():
             id_hotel INTEGER NOT NULL,
             id_communication INTEGER NOT NULL,
             id_attraction INTEGER NOT NULL,
-            weather_date DATE,
             adding_date DATE,
             localisation_country VARCHAR(50) NOT NULL,
             localisation_region VARCHAR(50) NOT NULL,
@@ -75,10 +66,20 @@ def create_tables():
                 REFERENCES hotel (id_hotel),
             FOREIGN KEY (id_communication)
                 REFERENCES communication (id_communication),
-            FOREIGN KEY (weather_date)
-                REFERENCES weather (weather_date),
             FOREIGN KEY (id_attraction)
                 REFERENCES attraction (id_attraction)
+        )
+        """,
+        """
+        CREATE TABLE weather (
+            id_place INTEGER,
+            weather_date DATE,
+            cloudy VARCHAR(20) NOT NULL,
+            humidity REAL,
+            temperature REAL,
+            FOREIGN KEY (id_place)
+                REFERENCES place (id_place),
+            CONSTRAINT weather_id PRIMARY KEY (id_place, weather_date)
         )
         """,
         """
@@ -212,6 +213,13 @@ def create_tables():
         """,
     )
     conn = None
+    photo_sql = (
+        """
+        INSERT INTO photo(file_size, file_path)
+        VALUES(%s, %s);
+        """
+    )
+    photo_path, photo_size = eiffel_photo()
     try:
         conn = psycopg2.connect(
             host="localhost",
@@ -226,9 +234,9 @@ def create_tables():
         # execute statement
         for command in commands:
             cur.execute(command)  # as a parameter SQL code
+        cur.execute(photo_sql, (photo_size, photo_path))
         cur.close()
         print("Successfully executed SQL code")
-        cur.close()
         conn.commit()
         print("Successfully created database's tables instances")
     except (Exception, psycopg2.DatabaseError) as error:
@@ -236,6 +244,13 @@ def create_tables():
     finally:
         if conn is not None:
             conn.close()
+
+
+def eiffel_photo():
+    path = os.path.dirname(__file__)
+    photo_path = os.path.join(path, 'initial_data', 'eiffel_tower.jpg')
+    file_size = 244.0
+    return photo_path, file_size
 
 
 create_tables()
