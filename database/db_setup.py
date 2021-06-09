@@ -4,6 +4,10 @@ import psycopg2
 def create_tables():
     commands = (
         """
+        DROP TABLE IF EXISTS visit, report_comment, report_post, report_user, interest, post, comment, admin_moderator,
+         admin_users, admin_places, attraction, app_user, place, weather, communication, hotel, photo, video
+        """,
+        """
         CREATE TABLE photo (
             id_photo SERIAL PRIMARY KEY,
             file_size REAL,
