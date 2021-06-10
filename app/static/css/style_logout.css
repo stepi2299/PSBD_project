@@ -1,0 +1,52 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.wrapper {
+    width: 100vw;
+    height: 100vh;
+    background-image: url(../example_pictures/airplane-5216583_1920.jpg);
+    background-repeat: no-repeat;
+}
+.screen-logout {
+    width: 350px;
+    height: 100px;
+    background-color: black;
+    border: 10px solid gold;
+    position: absolute;
+    left: 40%;
+    bottom:40%;
+    
+}
+.info {
+    font-family: arial,sans-serif;
+    font-size: 20px;
+    color: white;
+    text-align: center;
+}
+
+    .btn {
+    display: block;
+    width: 250px;
+    height: 40px;
+    border:2px solid gold;
+    color: white;
+    background-color: darkslategrey;
+    margin: 10px auto;
+    text-decoration: none;
+    text-align: center;
+    line-height: 40px;
+    
+}
+.btn:hover {
+    cursor: pointer;
+    font-weight: 600;
+    background-color: dimgrey;
+}
+
+    
+    
+
+
+

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil użytkownika</title>
+    <link rel="stylesheet" href="static/css/style_user_profile.css">
+</head>
+<body>
+    <div class="wrapper">
+    <header>
+            <img src="./Obrazki/character-2117975_1280.png" alt="">
+            <div class="basic_information">
+            <p>Login:</p>
+            <p>Imię:</p>
+            <p>Nazwisko:</p>
+            <p>Data założenia konta:</p>
+            <p>E-mail:</p>
+            <p>Kraj:</p>
+            <p>Miasto:</p>    
+            <a href=""><button class="Profil_edition">Edycja profilu</button></a>
+                
+
+        </div>
+            
+            
+            
+        
+    </header>
+    <main>
+        <div class="tab">
+            <button class="tablinks" onclick="openPlace(event, 'Visited_place')">Odwiedzone miejsca</button>
+            <button class="tablinks" onclick="openPlace(event, 'Visited_attraction')">Odwiedzone atrakcje</button>
+            <button class="tablinks" onclick="openPlace(event, 'Planned_travel')">Zaplanowane podróże</button>
+            <button class="tablinks" onclick="openPlace(event, 'Friends')">Znajomi</button>
+          </div>
+          
+          <!-- Tab content -->
+          <div id="Visited_place" class="tabcontent">
+            <h3>Odwiedzone przez ciebie miejsca</h3>
+            <table>
+                <tr>
+                  <th>Nazwa miejsca</th>
+                  <th>Kraj</th>
+                  <th>Data</th>
+                </tr>
+                <tr>
+                  <td>Alfreds Futterkiste</td>
+                  <td>Maria Anders</td>
+                  <td>Germany</td>
+                </tr>
+                <tr>
+                  <td>Centro comercial Moctezuma</td>
+                  <td>Francisco Chang</td>
+                  <td>Mexico</td>
+                </tr>
+                <tr>
+                  <td>Ernst Handel</td>
+                  <td>Roland Mendel</td>
+                  <td>Austria</td>
+                </tr>
+                <tr>
+                  <td>Island Trading</td>
+                  <td>Helen Bennett</td>
+                  <td>UK</td>
+                </tr>
+                <tr>
+                  <td>Laughing Bacchus Winecellars</td>
+                  <td>Yoshi Tannamuri</td>
+                  <td>Canada</td>
+                </tr>
+                <tr>
+                  <td>Magazzini Alimentari Riuniti</td>
+                  <td>Giovanni Rovelli</td>
+                  <td>Italy</td>
+                </tr>
+              </table>
+          </div>
+          
+          <div id="Visited_attraction" class="tabcontent">
+            <h3>Odwiedzone przez ciebie atrakcje</h3>
+            <table>
+                <tr>
+                  <th>Nazwa atrakcji</th>
+                  <th>Kraj</th>
+                  <th>Data</th>
+                </tr>
+                <tr>
+                  <td>Alfreds Futterkiste</td>
+                  <td>Maria Anders</td>
+                  <td>Germany</td>
+                </tr>
+                <tr>
+                  <td>Centro comercial Moctezuma</td>
+                  <td>Francisco Chang</td>
+                  <td>Mexico</td>
+                </tr>
+                <tr>
+                  <td>Ernst Handel</td>
+                  <td>Roland Mendel</td>
+                  <td>Austria</td>
+                </tr>
+                <tr>
+                  <td>Island Trading</td>
+                  <td>Helen Bennett</td>
+                  <td>UK</td>
+                </tr>
+                <tr>
+                  <td>Laughing Bacchus Winecellars</td>
+                  <td>Yoshi Tannamuri</td>
+                  <td>Canada</td>
+                </tr>
+                <tr>
+                  <td>Magazzini Alimentari Riuniti</td>
+                  <td>Giovanni Rovelli</td>
+                  <td>Italy</td>
+                </tr>
+              </table>
+            
+          </div>
+          
+          <div id="Planned_travel" class="tabcontent">
+            <h3>Miejsca które chcesz odwiedzić</h3>
+            <table>
+                <tr>
+                  <th>Nazwa</th>
+                  <th>Kraj</th>
+                  <th>Planowana data</th>
+                </tr>
+                <tr>
+                  <td>Alfreds Futterkiste</td>
+                  <td>Maria Anders</td>
+                  <td>Germany</td>
+                </tr>
+                <tr>
+                  <td>Centro comercial Moctezuma</td>
+                  <td>Francisco Chang</td>
+                  <td>Mexico</td>
+                </tr>
+                <tr>
+                  <td>Ernst Handel</td>
+                  <td>Roland Mendel</td>
+                  <td>Austria</td>
+                </tr>
+                <tr>
+                  <td>Island Trading</td>
+                  <td>Helen Bennett</td>
+                  <td>UK</td>
+                </tr>
+                <tr>
+                  <td>Laughing Bacchus Winecellars</td>
+                  <td>Yoshi Tannamuri</td>
+                  <td>Canada</td>
+                </tr>
+                <tr>
+                  <td>Magazzini Alimentari Riuniti</td>
+                  <td>Giovanni Rovelli</td>
+                  <td>Italy</td>
+                </tr>
+              </table>
+          </div>
+          <div id="Friends" class="tabcontent">
+              <h3>Twoi Znajomi</h3>
+              <table>
+                <tr>
+                  <th>Company</th>
+                  <th>Contact</th>
+                  <th>Country</th>
+                </tr>
+                <tr>
+                  <td>Alfreds Futterkiste</td>
+                  <td>Maria Anders</td>
+                  <td>Germany</td>
+                </tr>
+                <tr>
+                  <td>Centro comercial Moctezuma</td>
+                  <td>Francisco Chang</td>
+                  <td>Mexico</td>
+                </tr>
+                <tr>
+                  <td>Ernst Handel</td>
+                  <td>Roland Mendel</td>
+                  <td>Austria</td>
+                </tr>
+                <tr>
+                  <td>Island Trading</td>
+                  <td>Helen Bennett</td>
+                  <td>UK</td>
+                </tr>
+                <tr>
+                  <td>Laughing Bacchus Winecellars</td>
+                  <td>Yoshi Tannamuri</td>
+                  <td>Canada</td>
+                </tr>
+                <tr>
+                  <td>Magazzini Alimentari Riuniti</td>
+                  <td>Giovanni Rovelli</td>
+                  <td>Italy</td>
+                </tr>
+              </table>
+          </div>
+
+    
+</dvi>
+    </main>
+</div>
+    <script>
+        function openPlace(evt, Name) {
+  // Declare all variables
+  var i, tabcontent, tablinks;
+
+  // Get all elements with class="tabcontent" and hide them
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+
+  // Get all elements with class="tablinks" and remove the class "active"
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+
+  // Show the current tab, and add an "active" class to the button that opened the tab
+  document.getElementById(Name).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+    
+    </script>
+</body>
+</html>

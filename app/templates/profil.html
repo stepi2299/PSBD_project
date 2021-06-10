@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Miejsce</title>
+    <link rel="stylesheet" href="static/css/style_profil.css">
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+            <div class="bg">
+                <span class="title"><p>Nazwa miejsca</p></span>
+            </div>
+        </header>
+        <main>
+            <section class="hotel">
+                
+                <div class="bg">
+                    <button id="myBtn_hotel" class="btn">Hotele</button>
+                    <div id="myModal-hotel" class="modal">
+                        <div class="modal-content-hotel">
+                            <span class="close-hotel">&times;</span>
+                            <h2>Dostępne możliwości noclegu</h2>
+                            <table>
+                                <tr>
+                                  <th>Nazwa</th>
+                                  <th>Lokalizacja</th>
+                                  <th>Odległość</th>
+                                  <th>Link</th>
+                                </tr>
+                                <tr>
+                                  <td></td>
+                                  <td></td>
+                                  <td></td>
+                                  <td></td>
+                                </tr>
+                                <tr>
+                                  <td></td>
+                                  <td></td>
+                                  <td></td>
+                                  <td></td>
+                                </tr>
+                                <tr>
+                                  <td></td>
+                                  <td></td>
+                                  <td></td>
+                                  <td></td>
+                                </tr>
+                                <tr>
+                                  <td></td>
+                                  <td></td>
+                                  <td></td>
+                                  <td></td>
+                                </tr>
+                                <tr>
+                                  <td></td>
+                                  <td></td>
+                                  <td></td>
+                                  <td></td>
+                                </tr>
+                                <tr>
+                                  <td></td>
+                                  <td></td>
+                                  <td></td>
+                                  <td></td>
+                                </tr>
+                              </table>
+                        </div>
+                    </div>
+                      </div>  
+                 
+                
+            
+            </section>
+            <section class="weather">
+            <div class="bg">
+                <button id="myBtn_weather" class="btn" >Pogoda</button>
+               <div id="myModal-weather" class="modal">
+                   <div class="modal-content-hotel">
+                       <span class="close-weather">&times;</span>
+                       <h2>Pogoda na najbliższe dni</h2>
+                       <table>
+                        <tr>
+                          <th>Data</th>
+                          <th>Wigotność</th>
+                          <th>Temperatura</th>
+                          <th>Opady</th>
+                        </tr>
+                        <tr>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tr>
+                        </table>
+                   </div>
+               </div>
+            </div>
+        </section>
+
+            <section class="atraction">
+            <div class="bg">
+                <button class="btn">Atrakcje</button>
+                
+
+                    
+            </div>
+        </section>
+
+            <section class="transport">
+            <div class="bg">
+                <button id="myBtn_transport" class="btn">Transport</button>
+                <div id="myModal-transport" class="modal">
+                  <div class="modal-content-transport">
+                    <span class="close-transport">&times;</span>
+                    <h2>Dostępne możliwości dotarcia na miejsce</h2>
+                    <table>
+                      <tr>
+                        <th>Data</th>
+                        <th>Wigotność</th>
+                        <th>Temperatura</th>
+                        <th>Opady</th>
+                      </tr>
+                      <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      </table>
+                  </div>
+                </div>
+                
+                
+                
+            </div>
+        </section>
+
+        </main>
+    </div>
+    <script>
+        var modal = document.getElementById('myModal-hotel');
+        var modal2 = document.getElementById('myModal-weather');
+        var modal3 = document.getElementById('myModal-transport');
+        var btn = document.getElementById('myBtn_hotel');
+        var btn2 = document.getElementById('myBtn_weather');
+        var btn3 = document.getElementById('myBtn_transport')
+        var span = document.getElementsByClassName('close-hotel')[0];
+        var span2 = document.getElementsByClassName('close-weather')[0];
+        var span3 = document.getElementsByClassName('close-transport')[0];
+        btn.onclick = function() {
+            modal.style.display = "block"
+        }
+        btn2.onclick = function() {
+            modal2.style.display = "block"
+        }
+        btn3.onclick = function() {
+          modal3.style.display = "block"
+        }
+        span.onclick = function() {
+            modal.style.display = "none"
+        }
+        span2.onclick = function() {
+            modal2.style.display = "none"
+        }
+        span3.onclick = function() {
+          modal3.style.display = "none"
+        }
+
+        window.onclick = function() {
+            if(event.target == modal) {
+            modal.style.display = "none"
+            }
+        }
+        window.onclick = function() {
+            if(event.target == modal2) {
+            modal2.style.display = "none"
+            }
+        }
+        window.onclick = function() {
+          if(event.target == modal3) {
+            modal3.styl.display = "none"
+          }
+        }
+
+    </script>
+</body>
+</html>

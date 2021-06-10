@@ -11,8 +11,9 @@ def create_tables():
         """
         CREATE TABLE photo (
             id_photo SERIAL PRIMARY KEY,
-            file_size FLOAT,
-            file_path VARCHAR(200)
+            name VARCHAR(20),
+            file_size REAL,
+            file_path VARCHAR(200) NOT NULL
         )
         """,
         """
@@ -215,11 +216,11 @@ def create_tables():
     conn = None
     photo_sql = (
         """
-        INSERT INTO photo(file_size, file_path)
-        VALUES(%s, %s);
+        INSERT INTO photo(name, file_size, file_path)
+        VALUES(%s, %s, %s);
         """
     )
-    photo_path, photo_size = eiffel_photo()
+    photo_name, photo_path, photo_size = eiffel_photo()
     try:
         conn = psycopg2.connect(
             host="localhost",
@@ -234,7 +235,7 @@ def create_tables():
         # execute statement
         for command in commands:
             cur.execute(command)  # as a parameter SQL code
-        cur.execute(photo_sql, (photo_size, photo_path))
+        cur.execute(photo_sql, (photo_name, photo_size, photo_path))
         cur.close()
         print("Successfully executed SQL code")
         conn.commit()
@@ -250,7 +251,8 @@ def eiffel_photo():
     path = os.path.dirname(__file__)
     photo_path = os.path.join(path, 'initial_data', 'eiffel_tower.jpg')
     file_size = 244.0
-    return photo_path, file_size
+    photo_name = 'eiffel tower'
+    return photo_name, photo_path, file_size
 
 
 create_tables()
