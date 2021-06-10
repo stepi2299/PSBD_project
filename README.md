@@ -2,9 +2,11 @@
 
 ### Setup Project
 To correctly setup project you need to:
-1. Download PostgreSQL database
-2. Open project in separate virtual environment
-3. Run following line in text terminal
+1. Download PostgreSQL database system
+2. Create database named `PSBD_places`
+3. Download repository on your local computer
+4. Open project in separate virtual environment
+5. Run following line in text terminal
 ```commandline
 pip install -r requirements.txt
 ```
