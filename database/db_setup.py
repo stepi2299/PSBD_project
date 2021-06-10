@@ -220,7 +220,7 @@ def create_tables():
         VALUES(%s, %s, %s);
         """
     )
-    photo_name, photo_path, photo_size = eiffel_photo()
+    eiffel_photo_name, eiffel_photo_path, eiffel_photo_size = eiffel_photo()
     try:
         conn = psycopg2.connect(
             host="localhost",
@@ -235,7 +235,7 @@ def create_tables():
         # execute statement
         for command in commands:
             cur.execute(command)  # as a parameter SQL code
-        cur.execute(photo_sql, (photo_name, photo_size, photo_path))
+        cur.execute(photo_sql, (eiffel_photo_name, eiffel_photo_size, eiffel_photo_path))  # adding default eiffel photo
         cur.close()
         print("Successfully executed SQL code")
         conn.commit()
