@@ -86,8 +86,8 @@ def create_tables():
         """
         CREATE TABLE app_user (
             login VARCHAR(20) PRIMARY KEY,
-            id_photo INTEGER NOT NULL,
-            password_hash VARCHAR(20) NOT NULL,
+            id_photo INTEGER,
+            password_hash VARCHAR(100) NOT NULL,
             creation_date DATE,
             email VARCHAR(50) NOT NULL,
             country VARCHAR(50) NOT NULL,
@@ -240,11 +240,17 @@ def create_tables():
         VALUES(%s, %s, %s, %s, %s, %s);
         """
     )
-
+    user_sql = (
+        """
+        INSERT INTO app_user(login, password_hash, email, country)
+        VALUES(%s, %s, %s, %s)
+        """
+    )
+    photo_path = os.path.dirname(__file__)
     #variables needed to photos to database
-    eiffel_photo_name, eiffel_photo_path, eiffel_photo_size = adding_photo('eiffel_tower.jpg', 'eiffel tower', 'sciezkaX')
-    sagrada_photo_name, sagrada_photo_path, sagrada_photo_size = adding_photo('sagrada_familia.jpg', 'sagrada familia', 'sciezkaX')
-    venice_photo_name, venice_photo_path, venice_photo_size = adding_photo('venice.jpg', 'venice','sciezkaX')
+    eiffel_photo_name, eiffel_photo_path, eiffel_photo_size = adding_photo('eiffel_tower.jpg')
+    sagrada_photo_name, sagrada_photo_path, sagrada_photo_size = adding_photo('sagrada_familia.jpg')
+    venice_photo_name, venice_photo_path, venice_photo_size = adding_photo('venice.jpg')
 
     try:
         conn = psycopg2.connect(
@@ -263,8 +269,6 @@ def create_tables():
 
         #adding some default photos to sql table "photo"
         cur.execute(photo_sql, (eiffel_photo_name, eiffel_photo_size, eiffel_photo_path))  # eiffel tower
-        #id_photo_paris = cur.fetchone()[0]
-        #print(id_photo_paris)
         cur.execute(photo_sql, (sagrada_photo_name, sagrada_photo_size, sagrada_photo_path))  # sagrada familia
         cur.execute(photo_sql, (venice_photo_name, venice_photo_size, venice_photo_path))  # venice
         #adding some default hotels to sql table "hotel"
@@ -285,6 +289,7 @@ def create_tables():
                                         7, 'Water Taxi', 'Venice', """45° 26' 19.5324'' N""", """12° 19' 37.7220'' E"""))
         #adding some default attractions to sql table "attractions"
 
+        cur.execute(user_sql, ('kolegakolegi', 'd32crwsd', "boenisch22@wp.pl", "Poland"))
         cur.close()
         print("Successfully executed SQL code")
         conn.commit()
@@ -296,11 +301,51 @@ def create_tables():
             conn.close()
 
 
-def adding_photo(file_name, photo_name, file_path):
+def adding_photo(file_name):
     path = os.path.dirname(__file__)
     photo_path = os.path.join(path, 'initial_data', file_name)
-    #file_size = os.path.getsize(file_path)
-    file_size = 244.0
+    file_size = os.path.getsize(photo_path)
+    photo_name, photo_extension = file_name.split(".")
     return photo_name, photo_path, file_size
+
+
+def making_connection():
+    return psycopg2.connect(
+            host="localhost",
+            database="PSBD_places",
+            user="postgres",
+            password="postgres",
+            port=5432)
+
+
+def connect_and_pull_users(login):
+    """ Connect to the PostgreSQL database server """
+    conn = None
+    try:
+        command = (
+            """
+            SELECT * FROM app_user WHERE login = (%s);
+            """
+        )
+        conn = making_connection()
+
+        # creating a cursor
+        cur = conn.cursor()
+
+        # execute statement
+        cur.execute(command, (login,))  # as a parameter SQL code
+        print("Successfully executed SQL code")
+        ret = cur.fetchall()  # returns specified amount of records from database
+        print("Successfully getting expected value")
+        if ret == []:
+            ret = None
+        cur.close()
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+        return ret
+
 
 create_tables()
