@@ -86,8 +86,8 @@ def create_tables():
         """
         CREATE TABLE app_user (
             login VARCHAR(20) PRIMARY KEY,
-            id_photo INTEGER NOT NULL,
-            password VARCHAR(20) NOT NULL,
+            id_photo INTEGER,
+            password_hash VARCHAR(100) NOT NULL,
             creation_date DATE,
             email VARCHAR(50) NOT NULL,
             country VARCHAR(50) NOT NULL,
@@ -221,6 +221,17 @@ def create_tables():
         """
     )
     eiffel_photo_name, eiffel_photo_path, eiffel_photo_size = eiffel_photo()
+    # Adding first user
+    user_sql = (
+        """
+        INSERT INTO app_user(login, password_hash, email, country)
+        VALUES(%s, %s, %s, %s)
+        """
+    )
+    login = 'kolegakolegi'
+    password = "d32crwsd"
+    email = "boenisch22@wp.pl"
+    country = "PL"
     try:
         conn = psycopg2.connect(
             host="localhost",
@@ -236,6 +247,7 @@ def create_tables():
         for command in commands:
             cur.execute(command)  # as a parameter SQL code
         cur.execute(photo_sql, (eiffel_photo_name, eiffel_photo_size, eiffel_photo_path))  # adding default eiffel photo
+        cur.execute(user_sql, (login, password, email, country))
         cur.close()
         print("Successfully executed SQL code")
         conn.commit()
@@ -255,4 +267,45 @@ def eiffel_photo():
     return photo_name, photo_path, file_size
 
 
+def making_connection():
+    return psycopg2.connect(
+            host="localhost",
+            database="PSBD_places",
+            user="postgres",
+            password="postgres",
+            port=5432)
+
+
+def connect_and_pull_users(login):
+    """ Connect to the PostgreSQL database server """
+    conn = None
+    try:
+        command = (
+            """
+            SELECT * FROM app_user WHERE login = (%s);
+            """
+        )
+        conn = making_connection()
+
+        # creating a cursor
+        cur = conn.cursor()
+
+        # execute statement
+        cur.execute(command, (login,))  # as a parameter SQL code
+        print("Successfully executed SQL code")
+        ret = cur.fetchall()  # returns specified amount of records from database
+        print("Successfully getting expected value")
+        if ret == []:
+            ret = None
+        cur.close()
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+        return ret
+
+
 create_tables()
+w = connect_and_pull_users('kolgakolegi')
+print(w)
