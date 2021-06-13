@@ -1,3 +1,4 @@
+from werkzeug.security import generate_password_hash, check_password_hash
 import attr
 import datetime
 
@@ -125,11 +126,28 @@ class Visit:
 @attr.s
 class User:
     login: str = attr.ib()
-    password: str = attr.ib()
+    name: str = attr.ib()
+    surname: str = attr.ib()
+    id_group: int = attr.ib()
+    #id_photo: int = attr.ib()
+    age: int = attr.ib()
+    password_hash: str = attr.ib()
     create_account_date: datetime.datetime = attr.ib()
     email: str = attr.ib()
     city: str = attr.ib()
     country: str = attr.ib()
+    is_authenticated = False
+    is_active = False
+    is_anonymous = True
+
+    def get_id(self):
+        return self.login
+
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
 
 
 @attr.s
