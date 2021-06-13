@@ -19,7 +19,7 @@ def create_tables():
         """
         CREATE TABLE hotel (
             id_hotel SERIAL PRIMARY KEY,
-            link VARCHAR(200) NOT NULL,
+            link VARCHAR(400) NOT NULL,
             km_to_place REAL,
             address_city VARCHAR(100) NOT NULL,
             address_postal_code VARCHAR(200) NOT NULL,
@@ -30,12 +30,12 @@ def create_tables():
         """
         CREATE TABLE communication (
             id_communication SERIAL PRIMARY KEY,
-            link VARCHAR(200) NOT NULL,
+            link VARCHAR(400) NOT NULL,
             km_to_place REAL,
-            type VARCHAR(20) NOT NULL,
+            type VARCHAR(50) NOT NULL,
             address_city VARCHAR(100) NOT NULL,
-            address_latitude REAL,
-            address_longitude REAL
+            address_latitude VARCHAR(20),
+            address_longitude VARCHAR(20)
         )
         """,
         """
@@ -87,7 +87,7 @@ def create_tables():
         CREATE TABLE app_user (
             login VARCHAR(20) PRIMARY KEY,
             id_photo INTEGER NOT NULL,
-            password VARCHAR(20) NOT NULL,
+            password_hash VARCHAR(20) NOT NULL,
             creation_date DATE,
             email VARCHAR(50) NOT NULL,
             country VARCHAR(50) NOT NULL,
@@ -214,13 +214,38 @@ def create_tables():
         """,
     )
     conn = None
+
+    #references for adding
     photo_sql = (
         """
         INSERT INTO photo(name, file_size, file_path)
         VALUES(%s, %s, %s);
         """
     )
-    eiffel_photo_name, eiffel_photo_path, eiffel_photo_size = eiffel_photo()
+    hotel_sql = (
+        """
+        INSERT INTO hotel(link, km_to_place, address_city, address_postal_code, address_street, address_number)
+        VALUES(%s, %s, %s, %s, %s, %s);
+        """
+    )
+    communication_sql = (
+        """
+        INSERT INTO communication(link, km_to_place, type, address_city, address_latitude, address_longitude)
+        VALUES(%s, %s, %s, %s, %s, %s);
+        """
+    )
+    attractions_sql = (
+        """
+        INSERT INTO attraction(id_photo, type, price, description, open_hours, link)
+        VALUES(%s, %s, %s, %s, %s, %s);
+        """
+    )
+
+    #variables needed to photos to database
+    eiffel_photo_name, eiffel_photo_path, eiffel_photo_size = adding_photo('eiffel_tower.jpg', 'eiffel tower', 'sciezkaX')
+    sagrada_photo_name, sagrada_photo_path, sagrada_photo_size = adding_photo('sagrada_familia.jpg', 'sagrada familia', 'sciezkaX')
+    venice_photo_name, venice_photo_path, venice_photo_size = adding_photo('venice.jpg', 'venice','sciezkaX')
+
     try:
         conn = psycopg2.connect(
             host="localhost",
@@ -235,7 +260,31 @@ def create_tables():
         # execute statement
         for command in commands:
             cur.execute(command)  # as a parameter SQL code
-        cur.execute(photo_sql, (eiffel_photo_name, eiffel_photo_size, eiffel_photo_path))  # adding default eiffel photo
+
+        #adding some default photos to sql table "photo"
+        cur.execute(photo_sql, (eiffel_photo_name, eiffel_photo_size, eiffel_photo_path))  # eiffel tower
+        #id_photo_paris = cur.fetchone()[0]
+        #print(id_photo_paris)
+        cur.execute(photo_sql, (sagrada_photo_name, sagrada_photo_size, sagrada_photo_path))  # sagrada familia
+        cur.execute(photo_sql, (venice_photo_name, venice_photo_size, venice_photo_path))  # venice
+        #adding some default hotels to sql table "hotel"
+        cur.execute(hotel_sql, ('https://www.hotelparisbastille.com/fr/?gclid=Cj0KCQjw8IaGBhCHARIsAGIRRYrNQDqbBua0gWeNK-_Zi6W6JFKC0fgsK3zKxUJ3P7hq_6goqqxWMsYaAggOEALw_wcB',
+                                1, 'Paris', '75-012', 'Rue Corzatier', '64'))
+        cur.execute(hotel_sql, ('https://www.guestreservations.com/novotel-paris-centre-gare-montparnasse/booking?gclid=Cj0KCQjw8IaGBhCHARIsAGIRRYpipawQ3WgkjZbD9vKbEFMZEqryTLSQPqLTTlIUSNHF380-2SbRIvYaAh8DEALw_wcB',
+                                5, 'Paris', '75-015', 'Rue de Cotentin', '17'))
+        cur.execute(hotel_sql, ('https://www.hotelbarcelonaprincess.com/en/?gclid=Cj0KCQjw8IaGBhCHARIsAGIRRYqS4joAX0T4g8M1Nit_el6l7Cq9MnqDADUTNkHmGfIDROhmAr2pevAaAh1yEALw_wcB',
+                                8, 'Barcelona', '08-019', 'Sant Marti', '1'))
+        cur.execute(hotel_sql, ('https://www.booking.com/hotel/it/alloggiagliartistivenezia.pl.html?aid=311264;label=venice-QfIhceaSz2K1nIPll0SohwS390691190566%3Apl%3Ata%3Ap11580%3Ap2%3Aac%3Aap%3Aneg%3Afi%3Atikwd-1578401895%3Alp9061060%3Ali%3Adec%3Adm%3Appccp%3DUmFuZG9tSVYkc2RlIyh9YbSsBl3MCvHsyw-mWuxZ2N8;sid=a14583ce149d835e3785710b1359fba0;sig=v1OfeuI1Hk',
+                                3, 'Venice', '30-121', 'Calle Priuli Cavalletti', '99 A/C'))
+        #adding some default communications to sql table "communications"
+        cur.execute(communication_sql, ('https://www.ratp.fr/en',
+                                       6, 'Bus', 'Paris', """48° 51' 52.9776'' N""", """2° 20' 56.4504'' E"""))
+        cur.execute(communication_sql, ('https://www.tmb.cat/en/barcelona-transport/map/bus',
+                                        4, 'Bus', 'Barcelona', """41° 23' 24.7380'' N""", """2° 9' 14.4252'' E"""))
+        cur.execute(communication_sql, ('https://www.venicewatertaxi.it/en/',
+                                        7, 'Water Taxi', 'Venice', """45° 26' 19.5324'' N""", """12° 19' 37.7220'' E"""))
+        #adding some default attractions to sql table "attractions"
+
         cur.close()
         print("Successfully executed SQL code")
         conn.commit()
@@ -247,12 +296,11 @@ def create_tables():
             conn.close()
 
 
-def eiffel_photo():
+def adding_photo(file_name, photo_name, file_path):
     path = os.path.dirname(__file__)
-    photo_path = os.path.join(path, 'initial_data', 'eiffel_tower.jpg')
+    photo_path = os.path.join(path, 'initial_data', file_name)
+    #file_size = os.path.getsize(file_path)
     file_size = 244.0
-    photo_name = 'eiffel tower'
     return photo_name, photo_path, file_size
-
 
 create_tables()
