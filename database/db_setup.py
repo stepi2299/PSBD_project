@@ -16,7 +16,8 @@ def create_tables():
             id_photo SERIAL PRIMARY KEY,
             name VARCHAR(20),
             file_size REAL,
-            file_path VARCHAR(200) NOT NULL
+            file_path VARCHAR(200) NOT NULL,
+            extension VARCHAR(10)
         )
         """,
         """
@@ -223,8 +224,8 @@ def create_tables():
 
     # references for adding
     photo_sql = """
-        INSERT INTO photo(name, file_size, file_path)
-        VALUES(%s, %s, %s);
+        INSERT INTO photo(name, file_size, file_path, extension)
+        VALUES(%s, %s, %s, %s);
         """
     hotel_sql = """
         INSERT INTO hotel(link, km_to_place, address_city, address_postal_code, address_street, address_number)
@@ -247,13 +248,24 @@ def create_tables():
         VALUES(%s, %s, %s, %s)
         """
     # variables needed to photos to database
-    eiffel_photo_name, eiffel_photo_path, eiffel_photo_size = adding_photo(
-        "eiffel_tower.jpg"
-    )
-    sagrada_photo_name, sagrada_photo_path, sagrada_photo_size = adding_photo(
-        "sagrada_familia.jpg"
-    )
-    venice_photo_name, venice_photo_path, venice_photo_size = adding_photo("venice.jpg")
+    (
+        eiffel_photo_name,
+        eiffel_photo_path,
+        eiffel_photo_size,
+        eiffel_photo_ext,
+    ) = adding_photo("eiffel_tower.jpg")
+    (
+        sagrada_photo_name,
+        sagrada_photo_path,
+        sagrada_photo_size,
+        sagrada_photo_ext,
+    ) = adding_photo("sagrada_familia.jpg")
+    (
+        venice_photo_name,
+        venice_photo_path,
+        venice_photo_size,
+        venice_photo_ext,
+    ) = adding_photo("venice.jpg")
 
     try:
         conn = psycopg2.connect(
@@ -279,13 +291,21 @@ def create_tables():
 
         # adding some default photos to sql table "photo"
         cur.execute(
-            photo_sql, (eiffel_photo_name, eiffel_photo_size, eiffel_photo_path)
+            photo_sql,
+            (eiffel_photo_name, eiffel_photo_size, eiffel_photo_path, eiffel_photo_ext),
         )  # eiffel tower
         cur.execute(
-            photo_sql, (sagrada_photo_name, sagrada_photo_size, sagrada_photo_path)
+            photo_sql,
+            (
+                sagrada_photo_name,
+                sagrada_photo_size,
+                sagrada_photo_path,
+                sagrada_photo_ext,
+            ),
         )  # sagrada familia
         cur.execute(
-            photo_sql, (venice_photo_name, venice_photo_size, venice_photo_path)
+            photo_sql,
+            (venice_photo_name, venice_photo_size, venice_photo_path, venice_photo_ext),
         )  # venice
         # adding some default hotels to sql table "hotel"
         cur.execute(
@@ -375,8 +395,8 @@ def create_tables():
                 "kolegakolegi",
                 1,
                 None,
-                'imie',
-                'nazwisko',
+                "imie",
+                "nazwisko",
                 89,
                 "d32crwsd",
                 "kolegakolegi99@wp.pl",
@@ -400,7 +420,7 @@ def adding_photo(file_name):
     photo_path = os.path.join(path, "initial_data", file_name)
     file_size = os.path.getsize(photo_path)
     photo_name, photo_extension = file_name.split(".")
-    return photo_name, photo_path, file_size
+    return photo_name, photo_path, file_size, photo_extension
 
 
 def making_connection():
