@@ -246,7 +246,6 @@ def create_tables():
         VALUES(%s, %s, %s, %s)
         """
     )
-    photo_path = os.path.dirname(__file__)
     #variables needed to photos to database
     eiffel_photo_name, eiffel_photo_path, eiffel_photo_size = adding_photo('eiffel_tower.jpg')
     sagrada_photo_name, sagrada_photo_path, sagrada_photo_size = adding_photo('sagrada_familia.jpg')
@@ -289,6 +288,7 @@ def create_tables():
                                         7, 'Water Taxi', 'Venice', """45° 26' 19.5324'' N""", """12° 19' 37.7220'' E"""))
         #adding some default attractions to sql table "attractions"
 
+        # adding users
         cur.execute(user_sql, ('kolegakolegi', 'd32crwsd', "boenisch22@wp.pl", "Poland"))
         cur.close()
         print("Successfully executed SQL code")
@@ -349,3 +349,5 @@ def connect_and_pull_users(login):
 
 
 create_tables()
+w = connect_and_pull_users('kolgakolegi')
+print(w)
