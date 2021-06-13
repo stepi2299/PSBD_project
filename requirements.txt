@@ -5,3 +5,4 @@ python-dotenv==0.17.1
 psycopg2==2.8.6
 attrs==21.2.0
 black==21.5b2
+email-validator==1.1.3

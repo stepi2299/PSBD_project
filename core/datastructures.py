@@ -126,6 +126,11 @@ class Visit:
 @attr.s
 class User:
     login: str = attr.ib()
+    name: str = attr.ib()
+    surname: str = attr.ib()
+    id_group: int = attr.ib()
+    #id_photo: int = attr.ib()
+    age: int = attr.ib()
     password_hash: str = attr.ib()
     create_account_date: datetime.datetime = attr.ib()
     email: str = attr.ib()
