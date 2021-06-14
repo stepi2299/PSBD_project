@@ -7,4 +7,4 @@ class Config(object):
     DATABASE_NAME = os.environ.get('DATABASE_NAME') or 'PSBD_places'
     DATABASE_USER = os.environ.get('DATABASE_USER') or 'postgres'
     DATABASE_PASSWORD = os.environ.get('DATABASE_PASSWORD') or 'postgres'
-    DATABASE_PORT = os.environ.get('DATABASE_PORT') or '5432'
+    DATABASE_PORT = os.environ.get('DATABASE_PORT') or 5432

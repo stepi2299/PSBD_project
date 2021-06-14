@@ -129,12 +129,11 @@ class User:
     name: str = attr.ib()
     surname: str = attr.ib()
     id_group: int = attr.ib()
-    #id_photo: int = attr.ib()
+    # id_photo: int = attr.ib()
     age: int = attr.ib()
     password_hash: str = attr.ib()
     create_account_date: datetime.datetime = attr.ib()
     email: str = attr.ib()
-    city: str = attr.ib()
     country: str = attr.ib()
     is_authenticated = False
     is_active = False

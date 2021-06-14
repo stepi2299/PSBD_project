@@ -16,7 +16,8 @@ def create_tables():
             id_photo SERIAL PRIMARY KEY,
             name VARCHAR(20),
             file_size REAL,
-            file_path VARCHAR(200) NOT NULL
+            file_path VARCHAR(200) NOT NULL,
+            extension VARCHAR(10)
         )
         """,
         """
@@ -71,7 +72,7 @@ def create_tables():
             name VARCHAR(20),
             surname VARCHAR(20),
             age INTEGER, 
-            password_hash VARCHAR(100) NOT NULL,
+            password_hash VARCHAR(300) NOT NULL,
             creation_date DATE,
             email VARCHAR(50) NOT NULL,
             country VARCHAR(50) NOT NULL,
@@ -223,8 +224,8 @@ def create_tables():
 
     # references for adding
     photo_sql = """
-        INSERT INTO photo(name, file_size, file_path)
-        VALUES(%s, %s, %s);
+        INSERT INTO photo(name, file_size, file_path, extension)
+        VALUES(%s, %s, %s, %s);
         """
     hotel_sql = """
         INSERT INTO hotel(link, km_to_place, address_city, address_postal_code, address_street, address_number)
@@ -247,13 +248,24 @@ def create_tables():
         VALUES(%s, %s, %s, %s)
         """
     # variables needed to photos to database
-    eiffel_photo_name, eiffel_photo_path, eiffel_photo_size = adding_photo(
-        "eiffel_tower.jpg"
-    )
-    sagrada_photo_name, sagrada_photo_path, sagrada_photo_size = adding_photo(
-        "sagrada_familia.jpg"
-    )
-    venice_photo_name, venice_photo_path, venice_photo_size = adding_photo("venice.jpg")
+    (
+        eiffel_photo_name,
+        eiffel_photo_path,
+        eiffel_photo_size,
+        eiffel_photo_ext,
+    ) = adding_photo("eiffel_tower.jpg")
+    (
+        sagrada_photo_name,
+        sagrada_photo_path,
+        sagrada_photo_size,
+        sagrada_photo_ext,
+    ) = adding_photo("sagrada_familia.jpg")
+    (
+        venice_photo_name,
+        venice_photo_path,
+        venice_photo_size,
+        venice_photo_ext,
+    ) = adding_photo("venice.jpg")
 
     try:
         conn = psycopg2.connect(
@@ -279,13 +291,21 @@ def create_tables():
 
         # adding some default photos to sql table "photo"
         cur.execute(
-            photo_sql, (eiffel_photo_name, eiffel_photo_size, eiffel_photo_path)
+            photo_sql,
+            (eiffel_photo_name, eiffel_photo_size, eiffel_photo_path, eiffel_photo_ext),
         )  # eiffel tower
         cur.execute(
-            photo_sql, (sagrada_photo_name, sagrada_photo_size, sagrada_photo_path)
+            photo_sql,
+            (
+                sagrada_photo_name,
+                sagrada_photo_size,
+                sagrada_photo_path,
+                sagrada_photo_ext,
+            ),
         )  # sagrada familia
         cur.execute(
-            photo_sql, (venice_photo_name, venice_photo_size, venice_photo_path)
+            photo_sql,
+            (venice_photo_name, venice_photo_size, venice_photo_path, venice_photo_ext),
         )  # venice
         # adding some default hotels to sql table "hotel"
         cur.execute(
@@ -372,13 +392,13 @@ def create_tables():
         cur.execute(
             user_sql,
             (
-                "kolegakolegi",
+                "service",
                 1,
                 None,
-                'imie',
-                'nazwisko',
+                "kolega",
+                "kolegi",
                 89,
-                "d32crwsd",
+                "service",
                 "kolegakolegi99@wp.pl",
                 "pl",
                 datetime.datetime.now(),
@@ -400,7 +420,7 @@ def adding_photo(file_name):
     photo_path = os.path.join(path, "initial_data", file_name)
     file_size = os.path.getsize(photo_path)
     photo_name, photo_extension = file_name.split(".")
-    return photo_name, photo_path, file_size
+    return photo_name, photo_path, file_size, photo_extension
 
 
 def making_connection():
@@ -411,42 +431,6 @@ def making_connection():
         password="postgres",
         port=5432,
     )
-
-
-def connect_and_pull_users(valid, action="login"):
-    """Connect to the PostgreSQL database server"""
-    conn = None
-    try:
-        if action == "login":
-            command = """
-                SELECT * FROM app_user WHERE login = (%s);
-                """
-        elif action == "email":
-            command = """
-                SELECT * FROM app_user WHERE email = (%s);
-                """
-        else:
-            print("Wrong action")
-            return
-        conn = making_connection()
-
-        # creating a cursor
-        cur = conn.cursor()
-
-        # execute statement
-        cur.execute(command, (valid,))  # as a parameter SQL code
-        print("Successfully executed SQL code")
-        ret = cur.fetchall()  # returns specified amount of records from database
-        print("Successfully getting expected value")
-        if ret == []:
-            ret = None
-        cur.close()
-    except (Exception, psycopg2.DatabaseError) as error:
-        print(error)
-    finally:
-        if conn is not None:
-            conn.close()
-        return ret
 
 
 create_tables()
