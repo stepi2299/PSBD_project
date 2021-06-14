@@ -1,15 +1,14 @@
 import psycopg2
-from app import config
-from core.datastructures import User
+#from core.datastructures import User
 
 
 def making_connection():
     return psycopg2.connect(
-        host=config["DATABASE_HOST"],
-        database=config["DATABASE_NAME"],
-        user=config["DATABASE_USER"],
-        password=config["DATABASE_PASSWORD"],
-        port=config["DATABASE_PORT"],
+        host="localhost",
+        database="PSBD_places",
+        user="postgres",
+        password="postgres",
+        port=5432,
     )
 
 
@@ -224,3 +223,129 @@ def connect_and_pull_users(valid, action="login"):
         if conn is not None:
             conn.close()
         return user
+
+#it's working!!!!
+def get_hotels(address_city):
+    """ Connect to the PostgreSQL database server """
+    command = f"""SELECT link, km_to_place, address_street, address_number, address_city
+              FROM hotel
+              WHERE '{address_city}' = hotel.address_city
+              ORDER BY km_to_place"""
+    conn = None
+    try:
+        conn = making_connection()
+
+        # creating a cursor
+        cur = conn.cursor()
+
+        # execute statement
+        cur.execute(command)  # as a parameter SQL code
+        print("Successfully executed SQL code")
+
+        row = cur.fetchone()
+
+        while row is not None:
+            print(row)
+            row = cur.fetchone()
+
+        cur.close()
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+
+#it's working!!!!
+def get_communication(address_city):
+    """ Connect to the PostgreSQL database server """
+    command = f"""SELECT link, km_to_place
+                 FROM communication
+                 WHERE '{address_city}' = communication.address_city
+                 ORDER BY km_to_place"""
+    conn = None
+    try:
+        conn = making_connection()
+
+        # creating a cursor
+        cur = conn.cursor()
+
+        # execute statement
+        cur.execute(command)  # as a parameter SQL code
+        print("Successfully executed SQL code")
+
+        row = cur.fetchone()
+
+        while row is not None:
+            print(row)
+            row = cur.fetchone()
+
+        cur.close()
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+
+#it's working!!!!
+def get_photo(photo_name):
+    """ Connect to the PostgreSQL database server """
+    command = f"""SELECT file_size, file_path
+                  FROM photo
+                  WHERE '{photo_name}' = photo.name
+                  ORDER BY name"""
+    conn = None
+    try:
+        conn = making_connection()
+
+        # creating a cursor
+        cur = conn.cursor()
+
+        # execute statement
+        cur.execute(command)  # as a parameter SQL code
+        print("Successfully executed SQL code")
+
+        row = cur.fetchone()
+
+        while row is not None:
+            print(row)
+            row = cur.fetchone()
+
+        cur.close()
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+
+
+#maybe it's working maybe not, chuj wie
+#def get_weather_for_place(id_place):
+#    """ Connect to the PostgreSQL database server """
+#    command = f"""SELECT weather_date, cloudy, humidity, temperature
+#                  FROM weather
+#                  JOIN place USING(id_place)
+#                  WHERE '{id_place}' = place.id_place
+#                  ORDER BY weather_date"""
+#    conn = None
+#    try:
+#        conn = making_connection()
+#
+#        # creating a cursor
+#        cur = conn.cursor()
+#
+#        # execute statement
+#        cur.execute(command)  # as a parameter SQL code
+#        print("Successfully executed SQL code")
+#
+#        row = cur.fetchone()
+#
+#        while row is not None:
+#            print(row)
+#            row = cur.fetchone()
+#
+#        cur.close()
+#    except (Exception, psycopg2.DatabaseError) as error:
+#        print(error)
+#    finally:
+#        if conn is not None:
+#            conn.close()
