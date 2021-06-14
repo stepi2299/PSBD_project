@@ -2,7 +2,7 @@ from app import app, login
 from flask import render_template, redirect, url_for, flash
 from flask_login import current_user, login_user, logout_user
 from .forms import LoginForm, RegisterForm
-from database.db_setup import connect_and_pull_users
+from database.db_client import connect_and_pull_users
 from database.db_client import register_user
 from core.datastructures import User
 from werkzeug.security import generate_password_hash
@@ -26,10 +26,14 @@ def main_page():
 
 
 @app.route("/register", methods=["GET", "POST"])
-def register(request):
-    form = RegisterForm(request.form)
-    if request.method == "POST" and form.validate():
+def register():
+    form = RegisterForm()
+    print("eldo")
+    if form.validate_on_submit():
+        print("wgl?")
         password_hash = generate_password_hash(form.password.data)
+        print(password_hash)
+        print("tutaj")
         user = User(
             login=form.username.data,
             email=form.email.data,
@@ -41,7 +45,9 @@ def register(request):
             create_account_date=datetime.now(),
             country=form.country.data,
         )
+        print("Tutaj juz")
         register_user(user=user)
+        print("i nastepnie")
         flash("Thanks for registering")
         return redirect(url_for("login"))
     return render_template("register.html", title="Register", form=form)

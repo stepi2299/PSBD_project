@@ -72,7 +72,7 @@ def create_tables():
             name VARCHAR(20),
             surname VARCHAR(20),
             age INTEGER, 
-            password_hash VARCHAR(100) NOT NULL,
+            password_hash VARCHAR(300) NOT NULL,
             creation_date DATE,
             email VARCHAR(50) NOT NULL,
             country VARCHAR(50) NOT NULL,
@@ -431,42 +431,6 @@ def making_connection():
         password="postgres",
         port=5432,
     )
-
-
-def connect_and_pull_users(valid, action="login"):
-    """Connect to the PostgreSQL database server"""
-    conn = None
-    try:
-        if action == "login":
-            command = """
-                SELECT * FROM app_user WHERE login = (%s);
-                """
-        elif action == "email":
-            command = """
-                SELECT * FROM app_user WHERE email = (%s);
-                """
-        else:
-            print("Wrong action")
-            return
-        conn = making_connection()
-
-        # creating a cursor
-        cur = conn.cursor()
-
-        # execute statement
-        cur.execute(command, (valid,))  # as a parameter SQL code
-        print("Successfully executed SQL code")
-        ret = cur.fetchall()  # returns specified amount of records from database
-        print("Successfully getting expected value")
-        if ret == []:
-            ret = None
-        cur.close()
-    except (Exception, psycopg2.DatabaseError) as error:
-        print(error)
-    finally:
-        if conn is not None:
-            conn.close()
-        return ret
 
 
 create_tables()

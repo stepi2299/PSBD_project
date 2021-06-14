@@ -1,16 +1,16 @@
 import psycopg2
 
-# from app import config
+from app import config
 import datetime
 
 
 def making_connection():
     return psycopg2.connect(
-        host="localhost",
-        database="PSBD_places",
-        user="postgres",
-        password="postgres",
-        port=5432,
+        host=config["DATABASE_HOST"],
+        database=config["DATABASE_NAME"],
+        user=config["DATABASE_USER"],
+        password=config["DATABASE_PASSWORD"],
+        port=config["DATABASE_PORT"]
     )
 
 
@@ -163,7 +163,7 @@ def choosing_command(key):
 
 def register_user(user):
     connect_and_insert_data(
-        "app_users",
+        "app_user",
         (
             user.login,
             None,
@@ -177,3 +177,39 @@ def register_user(user):
             user.country,
         ),
     )
+
+
+def connect_and_pull_users(valid, action="login"):
+    """Connect to the PostgreSQL database server"""
+    conn = None
+    try:
+        if action == "login":
+            command = """
+                SELECT * FROM app_user WHERE login = (%s);
+                """
+        elif action == "email":
+            command = """
+                SELECT * FROM app_user WHERE email = (%s);
+                """
+        else:
+            print("Wrong action")
+            return
+        conn = making_connection()
+
+        # creating a cursor
+        cur = conn.cursor()
+
+        # execute statement
+        cur.execute(command, (valid,))  # as a parameter SQL code
+        print("Successfully executed SQL code")
+        ret = cur.fetchall()  # returns specified amount of records from database
+        print("Successfully getting expected value")
+        if ret == []:
+            ret = None
+        cur.close()
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+        return ret

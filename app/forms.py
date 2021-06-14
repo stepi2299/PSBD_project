@@ -8,7 +8,7 @@ from wtforms import (
     FileField,
 )
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, regexp, re
-from database.db_setup import connect_and_pull_users
+from database.db_client import connect_and_pull_users
 
 
 class LoginForm(FlaskForm):
@@ -25,7 +25,7 @@ class RegisterForm(FlaskForm):
     password2 = PasswordField(
         "Repeat Password", validators=[DataRequired(), EqualTo("password")]
     )
-    image = FileField(u"Image File", [regexp(u"^[^/\\]\.jpg$")])
+    # image = FileField(u"Image File", [regexp(u"^[^/\\]\.jpg$")])
     country = StringField("Country", validators=[DataRequired()])
     submit = SubmitField("Register")
 
@@ -38,7 +38,8 @@ class RegisterForm(FlaskForm):
         user = connect_and_pull_users(valid=email.data, action="email")
         if user is not None:
             raise ValidationError("Please use a different email address.")
-
+    """
     def validate_image(form, field):
         if field.data:
             field.data = re.sub(r"[^a-z0-9_.-]", "_", field.data)
+    """

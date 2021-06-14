@@ -2,7 +2,7 @@
 <html lang="pl">
 
 <head>
-    <link rel="stylesheet" href="static/css/style_register.css">
+    <link rel="stylesheet" href="../static/css/style_register.css">
     <meta charset="UTF-8">
     <title>Rejestracja</title>
 </head>
@@ -11,28 +11,40 @@
     <div class="wrapper">
         <div class="register">
             <form action="#" method="post">
-                <label for="first-name">Imię:</label>
-                <input type="text" placeholder="Wpisz swoje imię" class="first-name" name="first-name">
-                <label for="surname">Nazwisko:</label>
-                <input type="text" placeholder="Wpisz swoje nazwisko" class="surname" name="surname">
-                <label for="age">Wiek</label>
-                <input type="number" placeholder="Wpisz swoj wiek" class="age" name="age">
-                <label for="gender">Wybierz płeć</label>
-                <input type="checkbox" class="men" ><p class="gender-word">Mężczyzna</p>
-                <input type="checkbox" class="women"> <p class="gender-word">Kobieta</p>
-                <label for="E-mail">E-mail:</label>
-                <input type="text" placeholder="Wpisz swoj e-mail" class="e-mail" name="e-mail">
-                <label for="nick">Nick:</label>
-                <input type="text" placeholder="Wpisz swój pseudonim" class="nick" name="nick">
-                <label for="password">Hasło:</label>
-                <input type="password" placeholder="Wpisz hasło" class="password" name="password">
-                <label for="password-reapet">Powtórz hasło:</label>
-                <input type="password" placeholder="Powtórz hasło" class="password-reapet" name="password-reapet">
-                <label for="photo">Dodaj zdjęcie profilowe</label>
-                <input type="file" class="photo" name="photo">
-                <input type="submit" class="btn" value="Zarejestruj się">
-                
-    
+                {{ form.hidden_tag() }}
+                <p>
+                    {{form.name.label}}<br>
+                    {{form.name(class="first-name", placeholder="Enter your name")}}
+                </p>
+                <p>
+                    {{form.surname.label}}<br>
+                    {{form.surname(class="surname", placeholder="Enter your surname")}}
+                </p>
+                <p>
+                    {{form.age.label}}<br>
+                    {{form.age(class="age", placeholder="Enter your age")}}
+                </p>
+                <p>
+                    {{form.email.label}}<br>
+                    {{form.email(class="e-mail", placeholder="Enter your email")}}
+                </p>
+                <p>
+                    {{form.country.label}}<br>
+                    {{form.country(placeholder="your nationality", class="nationality")}}
+                </p>
+                <p>
+                    {{form.username.label}}<br>
+                    {{form.username(placeholder="Enter your login", class="nick")}}
+                </p>
+                <p>
+                    {{form.password.label}}<br>
+                    {{form.password(placeholder="Enter password", class="password")}}
+                </p>
+                <p>
+                    {{form.password2.label}}<br>
+                    {{form.password2(placeholder="repeat password", class="password-reapet")}}
+                </p>
+                    {{form.submit(class="btn", value="Register")}}
                 
  </form>
 
