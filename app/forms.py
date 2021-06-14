@@ -12,7 +12,10 @@ from database.db_client import connect_and_pull_users
 
 
 class LoginForm(FlaskForm):
-    pass
+    username = StringField("Username", validators=[DataRequired()])
+    password = PasswordField("Password", validators=[DataRequired()])
+    remember_me = BooleanField('Remember Me')
+    submit = SubmitField('Sign In')
 
 
 class RegisterForm(FlaskForm):

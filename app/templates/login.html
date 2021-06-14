@@ -11,17 +11,20 @@
 
     <div class="wrapper">
         <div class="login">
-            <form>
-                <label for="username">Nazwa użytkownika:</label>
-                <input type="text" placeholder="Wpisz nick lub e-mail" class="username" name="username">
-                <label for="password">Hasło:</label>
-                <input type="password" placeholder="Wpisz hasło" class="password" name="password">
+            <form action="#" method="post">
+                {{ form.hidden_tag() }}
+                <p>
+                    {{form.username.label}}<br>
+                    {{form.username(placeholder="Enter your login", class="username")}}
+                </p>
+                <p>
+                    {{form.password.label}}<br>
+                    {{form.password(placeholder="Enter password", class="password")}}
+                </p>
                 <p><a href="#">Zapomniałeś hasła ?</a></p>
                 <div class="down">
-                    <input type="checkbox">
-                    <label class="check" for="checkbox">Zapamiętaj mnie</label>
-                    <input type="submit" class="btn
-                  " value="Zaloguj się">
+                    <p>{{ form.remember_me(class="btn") }} {{ form.remember_me.label }}</p>
+                    <p>{{ form.submit(class="btn", value="Sign In") }}</p>
 
                 </div>
                 <div class="register">

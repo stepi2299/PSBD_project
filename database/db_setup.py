@@ -392,13 +392,13 @@ def create_tables():
         cur.execute(
             user_sql,
             (
-                "kolegakolegi",
+                "service",
                 1,
                 None,
-                "imie",
-                "nazwisko",
+                "kolega",
+                "kolegi",
                 89,
-                "d32crwsd",
+                "service",
                 "kolegakolegi99@wp.pl",
                 "pl",
                 datetime.datetime.now(),

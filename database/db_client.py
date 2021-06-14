@@ -1,7 +1,6 @@
 import psycopg2
-
 from app import config
-import datetime
+from core.datastructures import User
 
 
 def making_connection():
@@ -202,14 +201,18 @@ def connect_and_pull_users(valid, action="login"):
         # execute statement
         cur.execute(command, (valid,))  # as a parameter SQL code
         print("Successfully executed SQL code")
-        ret = cur.fetchall()  # returns specified amount of records from database
+        user = cur.fetchall()  # returns specified amount of records from database
         print("Successfully getting expected value")
-        if ret == []:
-            ret = None
+        if user == []:
+            user = None
+        else:
+            user = User(login=user[0][0], id_group=user[0][2], name=user[0][3], surname=user[0][4],
+                        age=user[0][5], password_hash=user[0][6], create_account_date=user[0][7],
+                        email=user[0][8], country=user[0][9])
         cur.close()
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
     finally:
         if conn is not None:
             conn.close()
-        return ret
+        return user

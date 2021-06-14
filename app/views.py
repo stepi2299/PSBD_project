@@ -28,12 +28,8 @@ def main_page():
 @app.route("/register", methods=["GET", "POST"])
 def register():
     form = RegisterForm()
-    print("eldo")
     if form.validate_on_submit():
-        print("wgl?")
         password_hash = generate_password_hash(form.password.data)
-        print(password_hash)
-        print("tutaj")
         user = User(
             login=form.username.data,
             email=form.email.data,
@@ -45,9 +41,7 @@ def register():
             create_account_date=datetime.now(),
             country=form.country.data,
         )
-        print("Tutaj juz")
         register_user(user=user)
-        print("i nastepnie")
         flash("Thanks for registering")
         return redirect(url_for("login"))
     return render_template("register.html", title="Register", form=form)
@@ -59,9 +53,11 @@ def login():
         return redirect(url_for("index"))
     form = LoginForm()
     if form.validate_on_submit():
-        user = connect_and_pull_users(login=form.username.data)
+        username = form.username.data
+        user = connect_and_pull_users(valid=username)
         if user is None or not user.check_password(form.password.data):
             flash("Invalid username or password")
+            print("Invalid username or password")
             return redirect(url_for("login"))
         login_user(user, remember=form.remember_me.data)
         return redirect(url_for("index"))
