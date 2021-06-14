@@ -14,8 +14,8 @@ from database.db_client import connect_and_pull_users
 class LoginForm(FlaskForm):
     username = StringField("Username", validators=[DataRequired()])
     password = PasswordField("Password", validators=[DataRequired()])
-    remember_me = BooleanField('Remember Me')
-    submit = SubmitField('Sign In')
+    remember_me = BooleanField("Remember Me")
+    submit = SubmitField("Sign In")
 
 
 class RegisterForm(FlaskForm):
@@ -41,6 +41,7 @@ class RegisterForm(FlaskForm):
         user = connect_and_pull_users(valid=email.data, action="email")
         if user is not None:
             raise ValidationError("Please use a different email address.")
+
     """
     def validate_image(form, field):
         if field.data:
