@@ -297,10 +297,7 @@ def create_tables():
         cur.execute(
             photo_sql,
             (
-                sagrada_photo_name,
-                sagrada_photo_size,
-                sagrada_photo_path,
-                sagrada_photo_ext,
+                sagrada_photo_name, sagrada_photo_size, sagrada_photo_path, sagrada_photo_ext,
             ),
         )  # sagrada familia
         cur.execute(
@@ -387,6 +384,39 @@ def create_tables():
             ),
         )
         # adding some default attractions to sql table "attractions"
+        cur.execute(
+            attractions_sql,
+            (
+                1,
+                "Architecture",
+                25.60,
+                "A wrought-iron lattice tower on the Champ de Mars in Paris, France. It is named after the engineer Gustave Eiffel, whose company designed and built the tower.",
+                "9:30-23:45",
+                "https://www.eiffeltickets.com/?gclid=CjwKCAjwn6GGBhADEiwAruUcKr3cddM0rmN63Hz_UGcu1NIFDrMKGwhSMezmLSW-nLzyV57BEwnkkhoCMi8QAvD_BwE",
+            ),
+        ) #eiffel tower
+        cur.execute(
+            attractions_sql,
+            (
+                2,
+                "Architecture",
+                30,
+                "Also known as the Sagrada Família, is a large unfinished Roman Catholic minor basilica in the Eixample district of Barcelona, Catalonia, Spain. Designed by the Spanish architect Antoni Gaudí (1852–1926), his work on the building is part of a UNESCO World Heritage Site.[5] On 7 November 2010, Pope Benedict XVI consecrated the church and proclaimed it a minor basilica",
+                "9:00-18:00",
+                "https://sagradafamilia.org/en/",
+            ),
+        ) #sagrada familia
+        cur.execute(
+            attractions_sql,
+            (
+                3,
+                "Sightseeing tour",
+                22.30,
+                "Learn to row like a Venetian! Try the stand-up style made iconic by the gondoliers. You'll support this local tradition with a sustainable activity as you connect with Venice in a rare, traditional Venetian all-wood batella coda di gambero. You can't know Venice if you don’t row Venice!",
+                "10:00-7:00",
+                "https://www.tripadvisor.com/Attraction_Review-g187870-d1856843-Reviews-Row_Venice-Venice_Veneto.html",
+            ),
+        ) #row venice
 
         # adding users
         cur.execute(
