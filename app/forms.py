@@ -47,3 +47,7 @@ class RegisterForm(FlaskForm):
         if field.data:
             field.data = re.sub(r"[^a-z0-9_.-]", "_", field.data)
     """
+
+
+class AdminForm(FlaskForm):
+    pass
