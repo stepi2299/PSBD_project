@@ -243,6 +243,7 @@ def create_tables():
         """
     place_sql = """
         INSERT INTO place(
+            name,
             id_hotel, 
             id_communication, 
             id_attraction, 
@@ -253,7 +254,7 @@ def create_tables():
             localisation_latitude, 
             localisation_longitude,
             login_admin)
-            VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
+            VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
     """
     user_sql = """
         INSERT INTO app_user(login, id_group, id_photo, name, surname, age, password_hash, email, country, creation_date)
@@ -599,6 +600,7 @@ def create_tables():
         cur.execute(
             place_sql,
             (
+                "Paris",
                 1,
                 1,
                 1,
@@ -614,11 +616,12 @@ def create_tables():
         cur.execute(
             place_sql,
             (
+                "Barcelona",
                 2,
                 2,
                 2,
                 datetime.datetime.now(),
-                "Barcelona",
+                "Spain",
                 "Catalonia",
                 "Spanish",
                 """41° 23' 24.7380'' N""",
@@ -629,11 +632,12 @@ def create_tables():
         cur.execute(
             place_sql,
             (
+                "Venice",
                 3,
                 3,
                 3,
                 datetime.datetime.now(),
-                "Venice",
+                "Italy",
                 "Venetia",
                 "Italian",
                 """45° 26' 19.5324'' N""",
