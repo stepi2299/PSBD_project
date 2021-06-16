@@ -1,6 +1,7 @@
 import psycopg2
 import os
 import datetime
+from werkzeug.security import generate_password_hash
 
 
 def create_tables():
@@ -281,6 +282,11 @@ def create_tables():
         venice_photo_ext,
     ) = adding_photo("venice.jpg")
 
+    password_service = generate_password_hash("service")
+    password_moderator = generate_password_hash("moderator")
+    password_adminp = generate_password_hash("adminp")
+    password_adminu = generate_password_hash("adminu")
+
     try:
         conn = psycopg2.connect(
             host="localhost",
@@ -303,6 +309,68 @@ def create_tables():
         cur.execute(user_group_sql, ("admin places", True, False, False))
         cur.execute(user_group_sql, ("admin users", False, True, True))
 
+        # adding users
+        cur.execute(
+            user_sql,
+            (
+                "service",
+                1,
+                None,
+                "kolega",
+                "kolegi",
+                89,
+                password_service,
+                "kolegakolegi99@wp.pl",
+                "pl",
+                datetime.datetime.now(),
+            ),
+        )
+        cur.execute(
+            user_sql,
+            (
+                "adminp",
+                3,
+                None,
+                "marek",
+                "kiep",
+                99,
+                password_adminp,
+                "marekkiep99@wp.pl",
+                "pl",
+                datetime.datetime.now(),
+            ),
+        )
+        cur.execute(
+            user_sql,
+            (
+                "moderator",
+                2,
+                None,
+                "remus",
+                "romulus",
+                99,
+                password_moderator,
+                "remusromulus@wp.pl",
+                "pl",
+                datetime.datetime.now(),
+            ),
+        )
+        cur.execute(
+            user_sql,
+            (
+                "adminu",
+                4,
+                None,
+                "szef",
+                "ludzi",
+                99,
+                password_adminu,
+                "szef1916@wp.pl",
+                "pl",
+                datetime.datetime.now(),
+            ),
+        )
+
         # adding some default photos to sql table "photo"
         cur.execute(
             photo_sql,
@@ -311,7 +379,10 @@ def create_tables():
         cur.execute(
             photo_sql,
             (
-                sagrada_photo_name, sagrada_photo_size, sagrada_photo_path, sagrada_photo_ext,
+                sagrada_photo_name,
+                sagrada_photo_size,
+                sagrada_photo_path,
+                sagrada_photo_ext,
             ),
         )  # sagrada familia
         cur.execute(
@@ -330,7 +401,7 @@ def create_tables():
                 "Rue Corzatier",
                 "64",
             ),
-        ) #paris 1
+        )  # paris 1
         cur.execute(
             hotel_sql,
             (
@@ -341,7 +412,7 @@ def create_tables():
                 "Rue de Cotentin",
                 "17",
             ),
-        ) #paris 2
+        )  # paris 2
         cur.execute(
             hotel_sql,
             (
@@ -352,7 +423,7 @@ def create_tables():
                 "Sant Marti",
                 "1",
             ),
-        ) #barcelona 1
+        )  # barcelona 1
         cur.execute(
             hotel_sql,
             (
@@ -374,7 +445,7 @@ def create_tables():
                 "Calle Priuli Cavalletti",
                 "99 A/C",
             ),
-        ) #venice 1
+        )  # venice 1
         cur.execute(
             hotel_sql,
             (
@@ -398,7 +469,7 @@ def create_tables():
                 """48° 51' 52.9776'' N""",
                 """2° 20' 56.4504'' E""",
             ),
-        ) #paris 1
+        )  # paris 1
         cur.execute(
             communication_sql,
             (
@@ -420,7 +491,7 @@ def create_tables():
                 """41° 23' 24.7380'' N""",
                 """2° 9' 14.4252'' E""",
             ),
-        ) #barcelona 1
+        )  # barcelona 1
         cur.execute(
             communication_sql,
             (
@@ -442,7 +513,7 @@ def create_tables():
                 """45° 26' 19.5324'' N""",
                 """12° 19' 37.7220'' E""",
             ),
-        ) #venice 1
+        )  # venice 1
         cur.execute(
             communication_sql,
             (
@@ -466,7 +537,7 @@ def create_tables():
                 "9:30-23:45",
                 "https://www.eiffeltickets.com/?gclid=CjwKCAjwn6GGBhADEiwAruUcKr3cddM0rmN63Hz_UGcu1NIFDrMKGwhSMezmLSW-nLzyV57BEwnkkhoCMi8QAvD_BwE",
             ),
-        ) #Paris - eiffel tower
+        )  # Paris - eiffel tower
         cur.execute(
             attractions_sql,
             (
@@ -488,7 +559,7 @@ def create_tables():
                 "9:00-18:00",
                 "https://sagradafamilia.org/en/",
             ),
-        ) #Barcelona - sagrada familia
+        )  # Barcelona - sagrada familia
         cur.execute(
             attractions_sql,
             (
@@ -510,7 +581,7 @@ def create_tables():
                 "10:00-19:00",
                 "https://www.tripadvisor.com/Attraction_Review-g187870-d1856843-Reviews-Row_Venice-Venice_Veneto.html",
             ),
-        ) #Venice - row venice
+        )  # Venice - row venice
         cur.execute(
             attractions_sql,
             (
@@ -523,7 +594,7 @@ def create_tables():
             ),
         )  # Venice - doge's palace
 
-        #adding some places
+        # adding some places
         cur.execute(
             place_sql,
             (
@@ -536,9 +607,9 @@ def create_tables():
                 "French",
                 """48° 51' 52.9776'' N""",
                 """2° 20' 56.4504'' E""",
-                None,
-            )
-        ) #paris
+                "adminp",
+            ),
+        )  # paris
         cur.execute(
             place_sql,
             (
@@ -551,9 +622,9 @@ def create_tables():
                 "Spanish",
                 """41° 23' 24.7380'' N""",
                 """2° 9' 14.4252'' E""",
-                None,
-            )
-        ) #barcelona
+                "adminp",
+            ),
+        )  # barcelona
         cur.execute(
             place_sql,
             (
@@ -566,71 +637,9 @@ def create_tables():
                 "Italian",
                 """45° 26' 19.5324'' N""",
                 """12° 19' 37.7220'' E""",
-                None,
-            )
-        ) #venice
-
-        # adding users
-        cur.execute(
-            user_sql,
-            (
-                "service",
-                1,
-                None,
-                "kolega",
-                "kolegi",
-                89,
-                "service",
-                "kolegakolegi99@wp.pl",
-                "pl",
-                datetime.datetime.now(),
-            ),
-        )
-        cur.execute(
-            user_sql,
-            (
                 "adminp",
-                1,
-                None,
-                "marek",
-                "kiep",
-                99,
-                "adminp",
-                "marekkiep99@wp.pl",
-                "pl",
-                datetime.datetime.now(),
             ),
-        )
-        cur.execute(
-            user_sql,
-            (
-                "moderator",
-                1,
-                None,
-                "remus",
-                "romulus",
-                99,
-                "moderator",
-                "remusromulus@wp.pl",
-                "pl",
-                datetime.datetime.now(),
-            ),
-        )
-        cur.execute(
-            user_sql,
-            (
-                "adminu",
-                1,
-                None,
-                "szef",
-                "ludzi",
-                99,
-                "adminu",
-                "szef1916@wp.pl",
-                "pl",
-                datetime.datetime.now(),
-            ),
-        )
+        )  # venice
 
         cur.close()
         print("Successfully executed SQL code")
