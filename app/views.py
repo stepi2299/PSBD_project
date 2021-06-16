@@ -1,7 +1,7 @@
 from app import app, login
 from flask import render_template, redirect, url_for, flash
 from flask_login import current_user, login_user, logout_user
-from .forms import LoginForm, RegisterForm
+from .forms import LoginForm, RegisterForm, AdminForm
 from database.db_client import connect_and_pull_users
 from database.db_client import register_user
 from core.datastructures import User
@@ -67,4 +67,14 @@ def login():
 @app.route("/logout")
 def logout():
     logout_user()
-    return redirect(url_for("index"))
+    return redirect(url_for('index'))
+
+
+@app.route('/admin_page', methods=['GET', 'POST'])
+def admin_page():
+    # tutaj trzeba będzie sprawdzić czy użytkownik nalezy do odpowiedniej grupy
+    form = AdminForm()
+    if form.validate_on_submit():
+        # tu inserty krystiana sie przydadza
+        return redirect(url_for('admin_page'))
+    return render_template('admin_page.html', title='Admin Page', form=form)

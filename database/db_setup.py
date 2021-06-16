@@ -86,6 +86,7 @@ def create_tables():
         """
         CREATE TABLE place (
             id_place SERIAL PRIMARY KEY,
+            name VARCHAR(100),
             id_hotel INTEGER NOT NULL,
             id_communication INTEGER NOT NULL,
             id_attraction INTEGER NOT NULL,

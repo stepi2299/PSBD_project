@@ -90,7 +90,8 @@ def choosing_command(key):
                                                      open_hours,
                                                      link)
                             VALUES(%s, %s, %s, %s, %s, %s) RETURNING id_attraction""",
-        "place": """"INSERT INTO place(id_hotel,
+        "place": """"INSERT INTO place(name, 
+                                                id_hotel,
                                                 id_communication,
                                                 id_attraction,
                                                 adding_date,
@@ -99,7 +100,7 @@ def choosing_command(key):
                                                 localisation_language,
                                                 localisation_latitude,
                                                 localisation_longitude)
-                            VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING id_place""",
+                            VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING id_place""",
         "weather": """INSERT INTO weather(weather_date,
                                                   cloudy,
                                                   humidity,
