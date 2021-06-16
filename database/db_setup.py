@@ -92,8 +92,8 @@ def create_tables():
             localisation_country VARCHAR(50) NOT NULL,
             localisation_region VARCHAR(50) NOT NULL,
             localisation_language VARCHAR(50) NOT NULL,
-            localisation_latitude REAL,
-            localisation_longitude REAL,
+            localisation_latitude VARCHAR(20),
+            localisation_longitude VARCHAR(20),
             login_admin VARCHAR(20),
             FOREIGN KEY (id_hotel)
                 REFERENCES hotel (id_hotel),
@@ -239,6 +239,20 @@ def create_tables():
         INSERT INTO attraction(id_photo, type, price, description, open_hours, link)
         VALUES(%s, %s, %s, %s, %s, %s);
         """
+    place_sql = """
+        INSERT INTO place(
+            id_hotel, 
+            id_communication, 
+            id_attraction, 
+            adding_date, 
+            localisation_country, 
+            localisation_region, 
+            localisation_language, 
+            localisation_latitude, 
+            localisation_longitude,
+            login_admin)
+            VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
+    """
     user_sql = """
         INSERT INTO app_user(login, id_group, id_photo, name, surname, age, password_hash, email, country, creation_date)
         VALUES(%s, %s, %s, %s,%s, %s, %s, %s, %s, %s)
@@ -304,6 +318,7 @@ def create_tables():
             photo_sql,
             (venice_photo_name, venice_photo_size, venice_photo_path, venice_photo_ext),
         )  # venice
+
         # adding some default hotels to sql table "hotel"
         cur.execute(
             hotel_sql,
@@ -315,7 +330,7 @@ def create_tables():
                 "Rue Corzatier",
                 "64",
             ),
-        )
+        ) #paris 1
         cur.execute(
             hotel_sql,
             (
@@ -326,7 +341,7 @@ def create_tables():
                 "Rue de Cotentin",
                 "17",
             ),
-        )
+        ) #paris 2
         cur.execute(
             hotel_sql,
             (
@@ -337,7 +352,18 @@ def create_tables():
                 "Sant Marti",
                 "1",
             ),
-        )
+        ) #barcelona 1
+        cur.execute(
+            hotel_sql,
+            (
+                "https://www.booking.com/hotel/es/w-barcelona.pl.html",
+                4,
+                "Barcelona",
+                "08-039",
+                "Placa Rosa Del Vents",
+                "1",
+            ),
+        )  # barcelona 2
         cur.execute(
             hotel_sql,
             (
@@ -348,7 +374,19 @@ def create_tables():
                 "Calle Priuli Cavalletti",
                 "99 A/C",
             ),
-        )
+        ) #venice 1
+        cur.execute(
+            hotel_sql,
+            (
+                "https://www.booking.com/hotel/it/nh-venezia-rio-novo.pl.html",
+                5,
+                "Venice",
+                "30-123",
+                "Calle Larga Ragusei Dorsoduro",
+                "3489/E-C",
+            ),
+        )  # venice 2
+
         # adding some default communications to sql table "communications"
         cur.execute(
             communication_sql,
@@ -360,7 +398,18 @@ def create_tables():
                 """48° 51' 52.9776'' N""",
                 """2° 20' 56.4504'' E""",
             ),
-        )
+        ) #paris 1
+        cur.execute(
+            communication_sql,
+            (
+                "https://www.ratp.fr/en",
+                4,
+                "Metro",
+                "Paris",
+                """48° 51' 52.9776'' N""",
+                """2° 20' 56.4504'' E""",
+            ),
+        )  # paris 1
         cur.execute(
             communication_sql,
             (
@@ -371,7 +420,18 @@ def create_tables():
                 """41° 23' 24.7380'' N""",
                 """2° 9' 14.4252'' E""",
             ),
-        )
+        ) #barcelona 1
+        cur.execute(
+            communication_sql,
+            (
+                "hhttps://www.tmb.cat/en/home",
+                2,
+                "Metro",
+                "Barcelona",
+                """41° 23' 24.7380'' N""",
+                """2° 9' 14.4252'' E""",
+            ),
+        )  # barcelona 1
         cur.execute(
             communication_sql,
             (
@@ -382,7 +442,19 @@ def create_tables():
                 """45° 26' 19.5324'' N""",
                 """12° 19' 37.7220'' E""",
             ),
-        )
+        ) #venice 1
+        cur.execute(
+            communication_sql,
+            (
+                "https://www.veneziaairport.it/en/",
+                20,
+                "Airport",
+                "Venice",
+                """45° 26' 19.5324'' N""",
+                """12° 19' 37.7220'' E""",
+            ),
+        )  # venice 2
+
         # adding some default attractions to sql table "attractions"
         cur.execute(
             attractions_sql,
@@ -394,7 +466,18 @@ def create_tables():
                 "9:30-23:45",
                 "https://www.eiffeltickets.com/?gclid=CjwKCAjwn6GGBhADEiwAruUcKr3cddM0rmN63Hz_UGcu1NIFDrMKGwhSMezmLSW-nLzyV57BEwnkkhoCMi8QAvD_BwE",
             ),
-        ) #eiffel tower
+        ) #Paris - eiffel tower
+        cur.execute(
+            attractions_sql,
+            (
+                1,
+                "Museum",
+                17,
+                "The world's largest art museum and a historic monument in Paris, France, and is best known for being the home of the Mona Lisa.",
+                "9:00-18:00",
+                "https://www.louvre.fr/en",
+            ),
+        )  # Paris - luwr
         cur.execute(
             attractions_sql,
             (
@@ -405,7 +488,18 @@ def create_tables():
                 "9:00-18:00",
                 "https://sagradafamilia.org/en/",
             ),
-        ) #sagrada familia
+        ) #Barcelona - sagrada familia
+        cur.execute(
+            attractions_sql,
+            (
+                2,
+                "Sport stadium",
+                10,
+                "A football stadium in Barcelona, Spain. It opened in 1957 and has been the home stadium of FC Barcelona since its completion.",
+                "10:00-18:30",
+                "https://www.fcbarcelona.com/en/",
+            ),
+        )  # Barcelona - camp nou
         cur.execute(
             attractions_sql,
             (
@@ -413,10 +507,68 @@ def create_tables():
                 "Sightseeing tour",
                 22.30,
                 "Learn to row like a Venetian! Try the stand-up style made iconic by the gondoliers. You'll support this local tradition with a sustainable activity as you connect with Venice in a rare, traditional Venetian all-wood batella coda di gambero. You can't know Venice if you don’t row Venice!",
-                "10:00-7:00",
+                "10:00-19:00",
                 "https://www.tripadvisor.com/Attraction_Review-g187870-d1856843-Reviews-Row_Venice-Venice_Veneto.html",
             ),
-        ) #row venice
+        ) #Venice - row venice
+        cur.execute(
+            attractions_sql,
+            (
+                3,
+                "Architecture",
+                31,
+                "A masterpiece of Gothic architecture, the building and its sculptural decoration date from various periods. The interior, with works by artists such as Titian, Veronese, Tintoretto, A.Vittoria and Tiepolo, includes vast council chambers, superbly decorated residential apartments, and austere prison cells.",
+                "10:00-18:00",
+                "https://www.doge-palace-tickets.com/?gclid=CjwKCAjwwqaGBhBKEiwAMk-FtHL_aWi0ESo0E5ckFQWFoCvk3LZkRZB1XgVx8_ocFXx2310Nm5O9eRoCS-4QAvD_BwE",
+            ),
+        )  # Venice - doge's palace
+
+        #adding some places
+        cur.execute(
+            place_sql,
+            (
+                1,
+                1,
+                1,
+                datetime.datetime.now(),
+                "France",
+                "Ile-de-France",
+                "French",
+                """48° 51' 52.9776'' N""",
+                """2° 20' 56.4504'' E""",
+                None,
+            )
+        ) #paris
+        cur.execute(
+            place_sql,
+            (
+                2,
+                2,
+                2,
+                datetime.datetime.now(),
+                "Barcelona",
+                "Catalonia",
+                "Spanish",
+                """41° 23' 24.7380'' N""",
+                """2° 9' 14.4252'' E""",
+                None,
+            )
+        ) #barcelona
+        cur.execute(
+            place_sql,
+            (
+                3,
+                3,
+                3,
+                datetime.datetime.now(),
+                "Venice",
+                "Venetia",
+                "Italian",
+                """45° 26' 19.5324'' N""",
+                """12° 19' 37.7220'' E""",
+                None,
+            )
+        ) #venice
 
         # adding users
         cur.execute(
@@ -434,6 +586,52 @@ def create_tables():
                 datetime.datetime.now(),
             ),
         )
+        cur.execute(
+            user_sql,
+            (
+                "adminp",
+                1,
+                None,
+                "marek",
+                "kiep",
+                99,
+                "adminp",
+                "marekkiep99@wp.pl",
+                "pl",
+                datetime.datetime.now(),
+            ),
+        )
+        cur.execute(
+            user_sql,
+            (
+                "moderator",
+                1,
+                None,
+                "remus",
+                "romulus",
+                99,
+                "moderator",
+                "remusromulus@wp.pl",
+                "pl",
+                datetime.datetime.now(),
+            ),
+        )
+        cur.execute(
+            user_sql,
+            (
+                "adminu",
+                1,
+                None,
+                "szef",
+                "ludzi",
+                99,
+                "adminu",
+                "szef1916@wp.pl",
+                "pl",
+                datetime.datetime.now(),
+            ),
+        )
+
         cur.close()
         print("Successfully executed SQL code")
         conn.commit()
