@@ -1,6 +1,6 @@
 import psycopg2
-from app import config
-from core.datastructures import User
+#from app import config
+#from core.datastructures import User
 
 
 def making_connection():
@@ -12,6 +12,14 @@ def making_connection():
         port=config["DATABASE_PORT"],
     )
 
+def making_connection2():
+    return psycopg2.connect(
+        host="localhost",
+        database="PSBD_places",
+        user="postgres",
+        password="postgres",
+        port=5432,
+    )
 
 # TODO check if this is working
 def connect_and_pull_data(command, return_amount):
@@ -225,3 +233,165 @@ def connect_and_pull_users(valid, action="login"):
         if conn is not None:
             conn.close()
         return user
+
+#it's working!!!!
+def get_hotels(id_place):
+    """ Connect to the PostgreSQL database server """
+    command = f"""SELECT link, km_to_place, address_street, address_number, address_city
+              FROM hotel
+              JOIN place USING(id_hotel)
+              WHERE '{id_place}' = place.id_place
+              ORDER BY km_to_place"""
+    conn = None
+    try:
+        conn = making_connection()
+
+        # creating a cursor
+        cur = conn.cursor()
+
+        # execute statement
+        cur.execute(command)  # as a parameter SQL code
+        print("Successfully executed SQL code")
+
+        row = cur.fetchone()
+
+        while row is not None:
+            print(row)
+            row = cur.fetchone()
+
+        cur.close()
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+
+#it's working!!!!
+def get_communication(address_city):
+    """ Connect to the PostgreSQL database server """
+    command = f"""SELECT link, km_to_place
+                 FROM communication
+                 WHERE '{address_city}' = communication.address_city
+                 ORDER BY km_to_place"""
+    conn = None
+    try:
+        conn = making_connection()
+
+        # creating a cursor
+        cur = conn.cursor()
+
+        # execute statement
+        cur.execute(command)  # as a parameter SQL code
+        print("Successfully executed SQL code")
+
+        row = cur.fetchone()
+
+        while row is not None:
+            print(row)
+            row = cur.fetchone()
+
+        cur.close()
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+
+#it's working!!!!
+def get_photo(photo_name):
+    """ Connect to the PostgreSQL database server """
+    command = f"""SELECT file_size, file_path
+                  FROM photo
+                  WHERE '{photo_name}' = photo.name
+                  ORDER BY name"""
+    conn = None
+    try:
+        conn = making_connection()
+
+        # creating a cursor
+        cur = conn.cursor()
+
+        # execute statement
+        cur.execute(command)  # as a parameter SQL code
+        print("Successfully executed SQL code")
+
+        row = cur.fetchone()
+
+        while row is not None:
+            print(row)
+            row = cur.fetchone()
+
+        cur.close()
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+
+
+def get_places(choosingBy="", parameter=""):
+    """ Connect to the PostgreSQL database server """
+    command = f"""SELECT *
+                  FROM place"""
+    if choosingBy != "" and parameter != "":
+        command = command + f""" WHERE '{parameter}' = place.{choosingBy}"""
+
+    conn = None
+    try:
+        conn = making_connection2()
+
+        # creating a cursor
+        cur = conn.cursor()
+
+        # execute statement
+        cur.execute(command)  # as a parameter SQL code
+        print("Successfully executed SQL code")
+
+        row = cur.fetchone()
+
+        while row is not None:
+            print(row)
+            row = cur.fetchone()
+
+        cur.close()
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+
+#get_places() #return all
+#get_places("id_place", 1) #return Paris
+#git get_places("localisation_country", "Spain") #return Barcelona
+
+#maybe it's working maybe not, chuj wie
+#def get_weather_for_place(id_place):
+#    """ Connect to the PostgreSQL database server """
+#    command = f"""SELECT weather_date, cloudy, humidity, temperature
+#                  FROM weather
+#                  JOIN place USING(id_place)
+#                  WHERE '{id_place}' = place.id_place
+#                  ORDER BY weather_date"""
+#    conn = None
+#    try:
+#        conn = making_connection()
+#
+#        # creating a cursor
+#        cur = conn.cursor()
+#
+#        # execute statement
+#        cur.execute(command)  # as a parameter SQL code
+#        print("Successfully executed SQL code")
+#
+#        row = cur.fetchall()
+#
+#        while row is not None:
+#            print(row)
+#            row = cur.fetchone()
+#
+#        cur.close()
+#    except (Exception, psycopg2.DatabaseError) as error:
+#        print(error)
+#    finally:
+#        if conn is not None:
+#            conn.close()
