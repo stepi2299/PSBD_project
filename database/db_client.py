@@ -257,7 +257,16 @@ def get_hotels(id_place):
         row = cur.fetchone()
 
         while row is not None:
-            hotel = Hotel(id=row[0], id_place=row[1], link=row[2], distance=row[3], city=row[4], postal_address=row[5], street=row[6], house_number=row[7])
+            hotel = Hotel(
+                id=row[0],
+                id_place=row[1],
+                link=row[2],
+                distance=row[3],
+                city=row[4],
+                postal_address=row[5],
+                street=row[6],
+                house_number=row[7],
+            )
             hotels.append(hotel)
             row = cur.fetchone()
 
@@ -291,7 +300,15 @@ def get_transport(id_place):
         row = cur.fetchone()
 
         while row is not None:
-            transport = Transport(id=row[0], id_place=row[1], link=row[2], distance=row[3], type=row[4], city=row[5], coordinates="")
+            transport = Transport(
+                id=row[0],
+                id_place=row[1],
+                link=row[2],
+                distance=row[3],
+                type=row[4],
+                city=row[5],
+                coordinates="",
+            )
             means_of_transports.append(transport)
             row = cur.fetchone()
 
@@ -321,7 +338,13 @@ def get_photo(id_photo):
         print("Successfully executed SQL code")
 
         row = cur.fetchone()
-        photo = Photo(id=row[0], name=row[1], file_size=row[2], file_path=row[3], file_extension=row[4])
+        photo = Photo(
+            id=row[0],
+            name=row[1],
+            file_size=row[2],
+            file_path=row[3],
+            file_extension=row[4],
+        )
 
         cur.close()
     except (Exception, psycopg2.DatabaseError) as error:
