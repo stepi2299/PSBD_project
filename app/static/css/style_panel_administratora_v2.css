@@ -1,0 +1,68 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.wrapper {
+    max-width: 100vw;
+    height: 100vh;
+    background-image: url(../example_pictures/travel-2650303_1920.jpg);
+    background-position: center;
+}
+h2 {
+    margin-bottom: 2%;
+    text-align: center;
+}
+p {
+    margin: 0 auto;
+}
+li {
+    list-style-type: none;
+}
+main {
+    width: 40%;
+    height: 40vh;
+    background-color: black;
+    color: white;
+    border: 10px solid gold;
+    display: block;
+    margin: 0 auto;
+    
+}
+.tablinks {
+    width: 49%;
+    font-size: 20px;
+    background-color: black;
+    color: white;
+    border: 2px solid gold;
+
+
+}
+.tablinks:hover {
+    background-color: gray;
+    cursor: pointer;
+}
+.tabcontent {
+    display: none;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;
+  }
+  h3 {
+      font-size: 40px;
+      
+  }
+  a {
+      width: 25%;
+      display: block;
+      font-size: 20px;
+      color: white;
+      text-decoration: none;
+      margin: 10px auto;
+      border: 1px solid gold;
+      text-align: center;
+      
+}
+a:hover {
+    background-color: gray;
+}
