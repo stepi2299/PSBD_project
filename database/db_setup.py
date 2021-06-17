@@ -9,8 +9,8 @@ def create_tables():
         """
         DROP TABLE IF EXISTS visit, report_comment, report_post, report_user,
                              interest, post, comment, admin_moderator, admin_users,
-                             admin_places, attraction, app_user, place, weather,
-                             communication, hotel, photo, video, user_groups
+                             admin_places, attraction, app_user, weather,
+                             transport, hotel, photo, video, place, user_groups
         """,
         """
         CREATE TABLE photo (
@@ -19,41 +19,6 @@ def create_tables():
             file_size REAL,
             file_path VARCHAR(200) NOT NULL,
             extension VARCHAR(10)
-        )
-        """,
-        """
-        CREATE TABLE hotel (
-            id_hotel SERIAL PRIMARY KEY,
-            link VARCHAR(400) NOT NULL,
-            km_to_place REAL,
-            address_city VARCHAR(100) NOT NULL,
-            address_postal_code VARCHAR(200) NOT NULL,
-            address_street VARCHAR(100) NOT NULL,
-            address_number VARCHAR(10) NOT NULL
-        )
-        """,
-        """
-        CREATE TABLE communication (
-            id_communication SERIAL PRIMARY KEY,
-            link VARCHAR(400) NOT NULL,
-            km_to_place REAL,
-            type VARCHAR(50) NOT NULL,
-            address_city VARCHAR(100) NOT NULL,
-            address_latitude VARCHAR(20),
-            address_longitude VARCHAR(20)
-        )
-        """,
-        """
-        CREATE TABLE attraction (
-            id_attraction SERIAL PRIMARY KEY,
-            id_photo INTEGER NOT NULL,
-            type VARCHAR(50) NOT NULL,
-            price REAL,
-            description VARCHAR(500),
-            open_hours VARCHAR(20) NOT NULL,
-            link VARCHAR(200),
-            FOREIGN KEY (id_photo)
-                REFERENCES photo (id_photo)
         )
         """,
         """
@@ -86,10 +51,8 @@ def create_tables():
         """
         CREATE TABLE place (
             id_place SERIAL PRIMARY KEY,
+            id_photo INTEGER NOT NULL,
             name VARCHAR(100),
-            id_hotel INTEGER NOT NULL,
-            id_communication INTEGER NOT NULL,
-            id_attraction INTEGER NOT NULL,
             adding_date DATE,
             localisation_country VARCHAR(50) NOT NULL,
             localisation_region VARCHAR(50) NOT NULL,
@@ -97,14 +60,52 @@ def create_tables():
             localisation_latitude VARCHAR(20),
             localisation_longitude VARCHAR(20),
             login_admin VARCHAR(20),
-            FOREIGN KEY (id_hotel)
-                REFERENCES hotel (id_hotel),
-            FOREIGN KEY (id_communication)
-                REFERENCES communication (id_communication),
-            FOREIGN KEY (id_attraction)
-                REFERENCES attraction (id_attraction),
             FOREIGN KEY (login_admin)
                 REFERENCES app_user (login)
+        )
+        """,
+        """
+        CREATE TABLE hotel (
+            id_hotel SERIAL PRIMARY KEY,
+            id_place INTEGER NOT NULL,
+            link VARCHAR(400) NOT NULL,
+            km_to_place REAL,
+            address_city VARCHAR(100) NOT NULL,
+            address_postal_code VARCHAR(200) NOT NULL,
+            address_street VARCHAR(100) NOT NULL,
+            address_number VARCHAR(10) NOT NULL,
+            FOREIGN KEY (id_place)
+                REFERENCES place(id_place)
+        )
+        """,
+        """
+        CREATE TABLE transport (
+            id_transport SERIAL PRIMARY KEY,
+            id_place INTEGER NOT NULL,
+            link VARCHAR(400) NOT NULL,
+            km_to_place REAL,
+            type VARCHAR(50) NOT NULL,
+            address_city VARCHAR(100) NOT NULL,
+            address_latitude VARCHAR(20),
+            address_longitude VARCHAR(20),
+            FOREIGN KEY (id_place)
+                REFERENCES place(id_place)
+        )
+        """,
+        """
+        CREATE TABLE attraction (
+            id_attraction SERIAL PRIMARY KEY,
+            id_place INTEGER NOT NULL,
+            id_photo INTEGER NOT NULL,
+            type VARCHAR(50) NOT NULL,
+            price REAL,
+            description VARCHAR(500),
+            open_hours VARCHAR(20) NOT NULL,
+            link VARCHAR(200),
+            FOREIGN KEY (id_photo)
+                REFERENCES photo (id_photo),
+            FOREIGN KEY (id_place)
+                REFERENCES place(id_place)
         )
         """,
         """
@@ -230,23 +231,21 @@ def create_tables():
         VALUES(%s, %s, %s, %s);
         """
     hotel_sql = """
-        INSERT INTO hotel(link, km_to_place, address_city, address_postal_code, address_street, address_number)
-        VALUES(%s, %s, %s, %s, %s, %s);
+        INSERT INTO hotel(id_place, link, km_to_place, address_city, address_postal_code, address_street, address_number)
+        VALUES(%s, %s, %s, %s, %s, %s, %s);
         """
-    communication_sql = """
-        INSERT INTO communication(link, km_to_place, type, address_city, address_latitude, address_longitude)
-        VALUES(%s, %s, %s, %s, %s, %s);
+    transport_sql = """
+        INSERT INTO transport(id_place, link, km_to_place, type, address_city, address_latitude, address_longitude)
+        VALUES(%s, %s, %s, %s, %s, %s, %s);
         """
     attractions_sql = """
-        INSERT INTO attraction(id_photo, type, price, description, open_hours, link)
-        VALUES(%s, %s, %s, %s, %s, %s);
+        INSERT INTO attraction(id_place, id_photo, type, price, description, open_hours, link)
+        VALUES(%s, %s, %s, %s, %s, %s, %s);
         """
     place_sql = """
         INSERT INTO place(
+            id_photo,
             name,
-            id_hotel, 
-            id_communication, 
-            id_attraction, 
             adding_date, 
             localisation_country, 
             localisation_region, 
@@ -254,7 +253,7 @@ def create_tables():
             localisation_latitude, 
             localisation_longitude,
             login_admin)
-            VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
+            VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s);
     """
     user_sql = """
         INSERT INTO app_user(login, id_group, id_photo, name, surname, age, password_hash, email, country, creation_date)
@@ -265,24 +264,15 @@ def create_tables():
         VALUES(%s, %s, %s, %s)
         """
     # variables needed to photos to database
-    (
-        eiffel_photo_name,
-        eiffel_photo_path,
-        eiffel_photo_size,
-        eiffel_photo_ext,
-    ) = adding_photo("eiffel_tower.jpg")
-    (
-        sagrada_photo_name,
-        sagrada_photo_path,
-        sagrada_photo_size,
-        sagrada_photo_ext,
-    ) = adding_photo("sagrada_familia.jpg")
-    (
-        venice_photo_name,
-        venice_photo_path,
-        venice_photo_size,
-        venice_photo_ext,
-    ) = adding_photo("venice.jpg")
+    eiffel_photo = adding_photo("eiffel_tower.jpg")
+    sagrada_photo = adding_photo("sagrada_familia.jpg")
+    gondola_photo = adding_photo("venice.jpg")
+    luwr_photo = adding_photo("luwr.jpg")
+    camp_nou_photo = adding_photo("camp_nou.jpg")
+    wen_arch_photo = adding_photo("wen_arch.jpg")
+    paris_photo = adding_photo("Paris.jpg")
+    barcelona_photo = adding_photo("barcelona.jpeg")
+    venice_photo = adding_photo("wen_arch.jpg")
 
     password_service = generate_password_hash("service")
     password_moderator = generate_password_hash("moderator")
@@ -376,26 +366,77 @@ def create_tables():
         # adding some default photos to sql table "photo"
         cur.execute(
             photo_sql,
-            (eiffel_photo_name, eiffel_photo_size, eiffel_photo_path, eiffel_photo_ext),
+            eiffel_photo,
         )  # eiffel tower
         cur.execute(
             photo_sql,
-            (
-                sagrada_photo_name,
-                sagrada_photo_size,
-                sagrada_photo_path,
-                sagrada_photo_ext,
-            ),
+            (sagrada_photo),
         )  # sagrada familia
         cur.execute(
             photo_sql,
-            (venice_photo_name, venice_photo_size, venice_photo_path, venice_photo_ext),
+            gondola_photo,
+        )  # venice
+        cur.execute(
+            photo_sql,
+            luwr_photo,
+        )  # luwr
+        cur.execute(photo_sql, camp_nou_photo)  # camp nou
+        cur.execute(
+            photo_sql,
+            wen_arch_photo,
+        )  # venice architecture
+        cur.execute(photo_sql, paris_photo)
+        cur.execute(photo_sql, barcelona_photo)
+        cur.execute(photo_sql, venice_photo)
+        # adding some places
+        cur.execute(
+            place_sql,
+            (
+                7,
+                "Paris",
+                datetime.datetime.now(),
+                "France",
+                "Ile-de-France",
+                "French",
+                """48° 51' 52.9776'' N""",
+                """2° 20' 56.4504'' E""",
+                "adminp",
+            ),
+        )  # paris
+        cur.execute(
+            place_sql,
+            (
+                8,
+                "Barcelona",
+                datetime.datetime.now(),
+                "Spain",
+                "Catalonia",
+                "Spanish",
+                """41° 23' 24.7380'' N""",
+                """2° 9' 14.4252'' E""",
+                "adminp",
+            ),
+        )  # barcelona
+        cur.execute(
+            place_sql,
+            (
+                9,
+                "Venice",
+                datetime.datetime.now(),
+                "Italy",
+                "Venetia",
+                "Italian",
+                """45° 26' 19.5324'' N""",
+                """12° 19' 37.7220'' E""",
+                "adminp",
+            ),
         )  # venice
 
         # adding some default hotels to sql table "hotel"
         cur.execute(
             hotel_sql,
             (
+                1,
                 "https://www.hotelparisbastille.com/fr/?gclid=Cj0KCQjw8IaGBhCHARIsAGIRRYrNQDqbBua0gWeNK-_Zi6W6JFKC0fgsK3zKxUJ3P7hq_6goqqxWMsYaAggOEALw_wcB",
                 1,
                 "Paris",
@@ -407,6 +448,7 @@ def create_tables():
         cur.execute(
             hotel_sql,
             (
+                1,
                 "https://www.guestreservations.com/novotel-paris-centre-gare-montparnasse/booking?gclid=Cj0KCQjw8IaGBhCHARIsAGIRRYpipawQ3WgkjZbD9vKbEFMZEqryTLSQPqLTTlIUSNHF380-2SbRIvYaAh8DEALw_wcB",
                 5,
                 "Paris",
@@ -418,6 +460,7 @@ def create_tables():
         cur.execute(
             hotel_sql,
             (
+                2,
                 "https://www.hotelbarcelonaprincess.com/en/?gclid=Cj0KCQjw8IaGBhCHARIsAGIRRYqS4joAX0T4g8M1Nit_el6l7Cq9MnqDADUTNkHmGfIDROhmAr2pevAaAh1yEALw_wcB",
                 8,
                 "Barcelona",
@@ -429,6 +472,7 @@ def create_tables():
         cur.execute(
             hotel_sql,
             (
+                2,
                 "https://www.booking.com/hotel/es/w-barcelona.pl.html",
                 4,
                 "Barcelona",
@@ -440,6 +484,7 @@ def create_tables():
         cur.execute(
             hotel_sql,
             (
+                3,
                 "https://www.booking.com/hotel/it/alloggiagliartistivenezia.pl.html?aid=311264;label=venice-QfIhceaSz2K1nIPll0SohwS390691190566%3Apl%3Ata%3Ap11580%3Ap2%3Aac%3Aap%3Aneg%3Afi%3Atikwd-1578401895%3Alp9061060%3Ali%3Adec%3Adm%3Appccp%3DUmFuZG9tSVYkc2RlIyh9YbSsBl3MCvHsyw-mWuxZ2N8;sid=a14583ce149d835e3785710b1359fba0;sig=v1OfeuI1Hk",
                 3,
                 "Venice",
@@ -451,6 +496,7 @@ def create_tables():
         cur.execute(
             hotel_sql,
             (
+                3,
                 "https://www.booking.com/hotel/it/nh-venezia-rio-novo.pl.html",
                 5,
                 "Venice",
@@ -460,10 +506,11 @@ def create_tables():
             ),
         )  # venice 2
 
-        # adding some default communications to sql table "communications"
+        # adding some default transport to sql table "transport"
         cur.execute(
-            communication_sql,
+            transport_sql,
             (
+                1,
                 "https://www.ratp.fr/en",
                 6,
                 "Bus",
@@ -473,8 +520,9 @@ def create_tables():
             ),
         )  # paris 1
         cur.execute(
-            communication_sql,
+            transport_sql,
             (
+                1,
                 "https://www.ratp.fr/en",
                 4,
                 "Metro",
@@ -484,8 +532,9 @@ def create_tables():
             ),
         )  # paris 1
         cur.execute(
-            communication_sql,
+            transport_sql,
             (
+                2,
                 "https://www.tmb.cat/en/barcelona-transport/map/bus",
                 4,
                 "Bus",
@@ -495,8 +544,9 @@ def create_tables():
             ),
         )  # barcelona 1
         cur.execute(
-            communication_sql,
+            transport_sql,
             (
+                2,
                 "hhttps://www.tmb.cat/en/home",
                 2,
                 "Metro",
@@ -506,8 +556,9 @@ def create_tables():
             ),
         )  # barcelona 1
         cur.execute(
-            communication_sql,
+            transport_sql,
             (
+                3,
                 "https://www.venicewatertaxi.it/en/",
                 7,
                 "Water Taxi",
@@ -517,8 +568,9 @@ def create_tables():
             ),
         )  # venice 1
         cur.execute(
-            communication_sql,
+            transport_sql,
             (
+                3,
                 "https://www.veneziaairport.it/en/",
                 20,
                 "Airport",
@@ -533,6 +585,7 @@ def create_tables():
             attractions_sql,
             (
                 1,
+                1,
                 "Architecture",
                 25.60,
                 "A wrought-iron lattice tower on the Champ de Mars in Paris, France. It is named after the engineer Gustave Eiffel, whose company designed and built the tower.",
@@ -544,6 +597,7 @@ def create_tables():
             attractions_sql,
             (
                 1,
+                4,
                 "Museum",
                 17,
                 "The world's largest art museum and a historic monument in Paris, France, and is best known for being the home of the Mona Lisa.",
@@ -554,6 +608,7 @@ def create_tables():
         cur.execute(
             attractions_sql,
             (
+                2,
                 2,
                 "Architecture",
                 30,
@@ -566,6 +621,7 @@ def create_tables():
             attractions_sql,
             (
                 2,
+                5,
                 "Sport stadium",
                 10,
                 "A football stadium in Barcelona, Spain. It opened in 1957 and has been the home stadium of FC Barcelona since its completion.",
@@ -576,6 +632,7 @@ def create_tables():
         cur.execute(
             attractions_sql,
             (
+                3,
                 3,
                 "Sightseeing tour",
                 22.30,
@@ -588,6 +645,7 @@ def create_tables():
             attractions_sql,
             (
                 3,
+                6,
                 "Architecture",
                 31,
                 "A masterpiece of Gothic architecture, the building and its sculptural decoration date from various periods. The interior, with works by artists such as Titian, Veronese, Tintoretto, A.Vittoria and Tiepolo, includes vast council chambers, superbly decorated residential apartments, and austere prison cells.",
@@ -595,56 +653,6 @@ def create_tables():
                 "https://www.doge-palace-tickets.com/?gclid=CjwKCAjwwqaGBhBKEiwAMk-FtHL_aWi0ESo0E5ckFQWFoCvk3LZkRZB1XgVx8_ocFXx2310Nm5O9eRoCS-4QAvD_BwE",
             ),
         )  # Venice - doge's palace
-
-        # adding some places
-        cur.execute(
-            place_sql,
-            (
-                "Paris",
-                1,
-                1,
-                1,
-                datetime.datetime.now(),
-                "France",
-                "Ile-de-France",
-                "French",
-                """48° 51' 52.9776'' N""",
-                """2° 20' 56.4504'' E""",
-                "adminp",
-            ),
-        )  # paris
-        cur.execute(
-            place_sql,
-            (
-                "Barcelona",
-                2,
-                2,
-                2,
-                datetime.datetime.now(),
-                "Spain",
-                "Catalonia",
-                "Spanish",
-                """41° 23' 24.7380'' N""",
-                """2° 9' 14.4252'' E""",
-                "adminp",
-            ),
-        )  # barcelona
-        cur.execute(
-            place_sql,
-            (
-                "Venice",
-                3,
-                3,
-                3,
-                datetime.datetime.now(),
-                "Italy",
-                "Venetia",
-                "Italian",
-                """45° 26' 19.5324'' N""",
-                """12° 19' 37.7220'' E""",
-                "adminp",
-            ),
-        )  # venice
 
         cur.close()
         print("Successfully executed SQL code")
@@ -662,7 +670,8 @@ def adding_photo(file_name):
     photo_path = os.path.join(path, "initial_data", file_name)
     file_size = os.path.getsize(photo_path)
     photo_name, photo_extension = file_name.split(".")
-    return photo_name, photo_path, file_size, photo_extension
+    tmp = (photo_name, file_size, photo_path, photo_extension)
+    return tmp
 
 
 def making_connection():

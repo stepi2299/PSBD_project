@@ -4,8 +4,9 @@ import datetime
 
 
 @attr.s
-class Image:
+class Photo:
     id: int = attr.ib()
+    name: str = attr.ib()
     file_size: float = attr.ib()
     file_path: str = attr.ib()
     file_extension: str = attr.ib()
@@ -32,6 +33,8 @@ class Weather:
 @attr.s
 class Attraction:
     id: int = attr.ib()
+    id_place: int = attr.ib()
+    id_photo: int = attr.ib()
     type: str = attr.ib()
     description: str = attr.ib()
     price: float = attr.ib()
@@ -50,30 +53,33 @@ class Address:
 @attr.s
 class Hotel(Address):
     id: int = attr.ib()
+    id_place: int = attr.ib()
     distance: float = attr.ib()
     link: str = attr.ib()
 
 
 @attr.s
-class Communication(Address):
+class Transport:
     id: int = attr.ib()
+    id_place: int = attr.ib()
     distance: float = attr.ib()
     link: str = attr.ib()
     type: str = attr.ib()
+    city: str = attr.ib()
+    coordinates: str = attr.ib()
 
 
-# TODO how to deal with situation when several hotels etc.
 @attr.s
-class Place(Hotel, Communication):
+class Place:
     id: int = attr.ib()
+    id_photo: int = attr.ib()
+    name: str = attr.ib()
     create_date: datetime.datetime = attr.ib()
     country: str = attr.ib()
     region: str = attr.ib()
     language: str = attr.ib()
     coordinates: str = attr.ib()  # TODO check if there are coordinates data types
-    hotels_id: set = attr.ib()
-    communications_id: set = attr.ib()
-    attractions_id: set = attr.ib()
+    admin_login: str = attr.ib()
 
 
 @attr.s
@@ -135,8 +141,8 @@ class User:
     create_account_date: datetime.datetime = attr.ib()
     email: str = attr.ib()
     country: str = attr.ib()
-    is_authenticated = False
-    is_active = False
+    is_authenticated = True
+    is_active = True
     is_anonymous = True
 
     def get_id(self):

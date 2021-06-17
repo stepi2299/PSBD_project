@@ -1,8 +1,8 @@
 from app import app, login
 from flask import render_template, redirect, url_for, flash
-from flask_login import current_user, login_user, logout_user
+from flask_login import current_user, login_user, logout_user, login_required
 from .forms import *
-from database.db_client import connect_and_pull_users, register_user
+from database.db_client import connect_and_pull_users, register_user, get_places
 from core.datastructures import User
 from werkzeug.security import generate_password_hash
 from datetime import datetime
@@ -16,12 +16,26 @@ def load_user(login):
 @app.route("/")
 @app.route("/index")
 def index():
-    return "Hello, World!"
+    places = get_places()
+    return f"Hello, World! {len(places), places[1].hotels_id}"
 
 
 @app.route("/main")
 def main_page():
     return render_template("main_page.html", title="Main Page")
+
+
+@app.route("/user/<login>")
+@login_required
+def user(login):
+    user = connect_and_pull_users(valid=login)
+    # tutaj trzeba będzie jeszcze wyciągnąc jego podróże znajomych itp i przekazac do templatki
+    return render_template("user_page.html", title="User Page", user=user)
+
+
+@app.route("/place")
+def profile():
+    return render_template("place.html", title="Place Profile")
 
 
 @app.route("/register", methods=["GET", "POST"])
@@ -49,7 +63,7 @@ def register():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for("index"))
+        return redirect(url_for("main_page"))
     form = LoginForm()
     if form.validate_on_submit():
         username = form.username.data
@@ -59,7 +73,7 @@ def login():
             print("Invalid username or password")
             return redirect(url_for("login"))
         login_user(user, remember=form.remember_me.data)
-        return redirect(url_for("index"))
+        return redirect(url_for("main_page"))
     return render_template("login.html", title="Sign In", form=form)
 
 

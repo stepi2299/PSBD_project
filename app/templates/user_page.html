@@ -5,20 +5,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profil użytkownika</title>
-    <link rel="stylesheet" href="static/css/style_user_profile.css">
+    <link rel="stylesheet" href="../static/css/style_user_profile.css">
 </head>
 <body>
     <div class="wrapper">
     <header>
-            <img src="./Obrazki/character-2117975_1280.png" alt="">
+            <img src="../../static/example_pictures/character-2117975_1280.png" alt="Lack of that picture">
             <div class="basic_information">
-            <p>Login:</p>
-            <p>Imię:</p>
-            <p>Nazwisko:</p>
-            <p>Data założenia konta:</p>
-            <p>E-mail:</p>
-            <p>Kraj:</p>
-            <p>Miasto:</p>    
+            <p>Login: {{user.login}}</p>
+            <p>Imię: {{user.name}}</p>
+            <p>Nazwisko: {{user.surname}}</p>
+            <p>Wiek: {{user.age}}</p>
+            <p>Data założenia konta: {{user.create_account_date}}</p>
+            <p>E-mail: {{user.email}}</p>
+            <p>Kraj: {{user.country}}</p>
             <a href=""><button class="Profil_edition">Edycja profilu</button></a>
                 
 
