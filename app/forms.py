@@ -49,5 +49,17 @@ class RegisterForm(FlaskForm):
     """
 
 
-class AdminForm(FlaskForm):
+class HotelForm(FlaskForm):
+    pass
+
+
+class AttractionForm(FlaskForm):
+    pass
+
+
+class TransportForm(FlaskForm):
+    pass
+
+
+class PlaceForm(FlaskForm):
     pass

@@ -1,9 +1,8 @@
 from app import app, login
 from flask import render_template, redirect, url_for, flash
 from flask_login import current_user, login_user, logout_user
-from .forms import LoginForm, RegisterForm, AdminForm
-from database.db_client import connect_and_pull_users
-from database.db_client import register_user
+from .forms import *
+from database.db_client import connect_and_pull_users, register_user
 from core.datastructures import User
 from werkzeug.security import generate_password_hash
 from datetime import datetime
@@ -72,9 +71,40 @@ def logout():
 
 @app.route('/admin_page', methods=['GET', 'POST'])
 def admin_page():
-    # tutaj trzeba będzie sprawdzić czy użytkownik nalezy do odpowiedniej grupy
-    form = AdminForm()
+    return render_template('admin_page.html', title='Admin Page')
+
+
+@app.route('/admin_page/hotel/', methods=['GET', 'POST'])
+def add_hotel():
+    form = HotelForm()
     if form.validate_on_submit():
         # tu inserty krystiana sie przydadza
         return redirect(url_for('admin_page'))
-    return render_template('admin_page.html', title='Admin Page', form=form)
+    return render_template('add_hotel.html', title='Add Hotel', form=form)
+
+
+@app.route('/admin_page/attraction/', methods=['GET', 'POST'])
+def add_attraction():
+    form = AttractionForm()
+    if form.validate_on_submit():
+        # tu inserty krystiana sie przydadza
+        return redirect(url_for('admin_page'))
+    return render_template('add_attraction.html', title='Add Attraction', form=form)
+
+
+@app.route('/admin_page/transport/', methods=['GET', 'POST'])
+def add_transport():
+    form = TransportForm()
+    if form.validate_on_submit():
+        # tu inserty krystiana sie przydadza
+        return redirect(url_for('admin_page'))
+    return render_template('add_transport.html', title='Add Transport', form=form)
+
+
+@app.route('/admin_page/place/', methods=['GET', 'POST'])
+def add_place():
+    form = PlaceForm()
+    if form.validate_on_submit():
+        # tu inserty krystiana sie przydadza
+        return redirect(url_for('admin_page'))
+    return render_template('add_place.html', title='Add Place', form=form)
