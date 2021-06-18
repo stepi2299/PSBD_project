@@ -2,7 +2,7 @@ from app import app, login
 from flask import render_template, redirect, url_for, flash
 from flask_login import current_user, login_user, logout_user, login_required
 from .forms import *
-from database.db_client import connect_and_pull_users, register_user, get_places
+from database.db_client import *
 from core.datastructures import User
 from werkzeug.security import generate_password_hash
 from datetime import datetime
@@ -16,13 +16,41 @@ def load_user(login):
 @app.route("/")
 @app.route("/index")
 def index():
-    places = get_places()
-    return f"Hello, World! {len(places), places[1].hotels_id}"
+    return f"Hello, World!"
 
 
 @app.route("/main")
 def main_page():
-    return render_template("main_page.html", title="Main Page")
+    photo_places = get_photos_with_param("place")
+    pl_len = len(photo_places)
+    places = []
+    for photo in photo_places:
+        places.append(
+            {
+                "place_name": photo.place_name,
+                "id_place": photo.id_place,
+                "path": photo.file_path,
+            }
+        )
+    photo_attractions = get_photos_with_param("attraction")
+    at_len = len(photo_attractions)
+    attractions = []
+    for photo in photo_attractions:
+        attractions.append(
+            {
+                "attraction_name": photo.attraction_name,
+                "id_place": photo.id_place,
+                "path": photo.file_path,
+            }
+        )
+    return render_template(
+        "main_page.html",
+        title="Main Page",
+        places=places,
+        attractions=attractions,
+        pl_len=pl_len,
+        at_len=at_len,
+    )
 
 
 @app.route("/user/<login>")
@@ -33,9 +61,39 @@ def user(login):
     return render_template("user_page.html", title="User Page", user=user)
 
 
-@app.route("/place")
-def profile():
-    return render_template("place.html", title="Place Profile")
+@app.route("/place/<int:pk>")
+def place(pk):
+    place = get_places("id_place", pk)[0]
+    place_dict = {"place_id": place.id, "name": place.name}
+    photo = get_photo(place.id_photo)
+    photo = {"path": photo.file_path}
+    hotels = get_hotels(pk)
+    hotels_list = []
+    for hotel in hotels:
+        hotels_list.append(
+            {
+                "name": hotel.name,
+                "city": hotel.city,
+                "street": hotel.street,
+                "number": hotel.house_number,
+                "distance": hotel.distance,
+                "link": hotel.link,
+            }
+        )
+    transports = get_transport(pk)
+    return render_template(
+        "place.html",
+        title="Place Profile",
+        place=place_dict,
+        photo=photo,
+        hotels=hotels_list,
+        transports=transports,
+    )
+
+
+@app.route("/attraction/<int:pk>")
+def attraction(pk):
+    return render_template("attraction_profile.html", title="Attraction Profile")
 
 
 @app.route("/register", methods=["GET", "POST"])
@@ -80,45 +138,45 @@ def login():
 @app.route("/logout")
 def logout():
     logout_user()
-    return redirect(url_for('index'))
+    return redirect(url_for("index"))
 
 
-@app.route('/admin_page', methods=['GET', 'POST'])
+@app.route("/admin_page", methods=["GET", "POST"])
 def admin_page():
-    return render_template('admin_page.html', title='Admin Page')
+    return render_template("admin_page.html", title="Admin Page")
 
 
-@app.route('/admin_page/hotel/', methods=['GET', 'POST'])
+@app.route("/admin_page/hotel/", methods=["GET", "POST"])
 def add_hotel():
     form = HotelForm()
     if form.validate_on_submit():
         # tu inserty krystiana sie przydadza
-        return redirect(url_for('admin_page'))
-    return render_template('add_hotel.html', title='Add Hotel', form=form)
+        return redirect(url_for("admin_page"))
+    return render_template("add_hotel.html", title="Add Hotel", form=form)
 
 
-@app.route('/admin_page/attraction/', methods=['GET', 'POST'])
+@app.route("/admin_page/attraction/", methods=["GET", "POST"])
 def add_attraction():
     form = AttractionForm()
     if form.validate_on_submit():
         # tu inserty krystiana sie przydadza
-        return redirect(url_for('admin_page'))
-    return render_template('add_attraction.html', title='Add Attraction', form=form)
+        return redirect(url_for("admin_page"))
+    return render_template("add_attraction.html", title="Add Attraction", form=form)
 
 
-@app.route('/admin_page/transport/', methods=['GET', 'POST'])
+@app.route("/admin_page/transport/", methods=["GET", "POST"])
 def add_transport():
     form = TransportForm()
     if form.validate_on_submit():
         # tu inserty krystiana sie przydadza
-        return redirect(url_for('admin_page'))
-    return render_template('add_transport.html', title='Add Transport', form=form)
+        return redirect(url_for("admin_page"))
+    return render_template("add_transport.html", title="Add Transport", form=form)
 
 
-@app.route('/admin_page/place/', methods=['GET', 'POST'])
+@app.route("/admin_page/place/", methods=["GET", "POST"])
 def add_place():
     form = PlaceForm()
     if form.validate_on_submit():
         # tu inserty krystiana sie przydadza
-        return redirect(url_for('admin_page'))
-    return render_template('add_place.html', title='Add Place', form=form)
+        return redirect(url_for("admin_page"))
+    return render_template("add_place.html", title="Add Place", form=form)

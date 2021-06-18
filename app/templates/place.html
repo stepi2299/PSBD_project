@@ -5,13 +5,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Miejsce</title>
-    <link rel="stylesheet" href="static/css/style_profil.css">
+    <link rel="stylesheet" href="../static/css/style_profil.css">
 </head>
 <body>
     <div class="wrapper">
         <header>
             <div class="bg">
-                <span class="title"><p>Nazwa miejsca</p></span>
+                <span class="title"><p>{{place.name}}</p></span>
             </div>
         </header>
         <main>
@@ -24,48 +24,14 @@
                             <span class="close-hotel">&times;</span>
                             <h2>Dostępne możliwości noclegu</h2>
                             <table>
+                                {% for hotel in hotels %}
                                 <tr>
-                                  <th>Nazwa</th>
-                                  <th>Lokalizacja</th>
-                                  <th>Odległość</th>
-                                  <th>Link</th>
+                                  <th>{{hotel.name}}</th>
+                                  <th>{{hotel.city}} {{hotel.street}} {{hotel.number}}</th>
+                                  <th>{{hotel.distance}}</th>
+                                  <th>{{hotel.link}}</th>
                                 </tr>
-                                <tr>
-                                  <td></td>
-                                  <td></td>
-                                  <td></td>
-                                  <td></td>
-                                </tr>
-                                <tr>
-                                  <td></td>
-                                  <td></td>
-                                  <td></td>
-                                  <td></td>
-                                </tr>
-                                <tr>
-                                  <td></td>
-                                  <td></td>
-                                  <td></td>
-                                  <td></td>
-                                </tr>
-                                <tr>
-                                  <td></td>
-                                  <td></td>
-                                  <td></td>
-                                  <td></td>
-                                </tr>
-                                <tr>
-                                  <td></td>
-                                  <td></td>
-                                  <td></td>
-                                  <td></td>
-                                </tr>
-                                <tr>
-                                  <td></td>
-                                  <td></td>
-                                  <td></td>
-                                  <td></td>
-                                </tr>
+                                {% endfor %}
                               </table>
                         </div>
                     </div>
@@ -132,7 +98,7 @@
 
             <section class="atraction">
             <div class="bg">
-                <button class="btn">Atrakcje</button>
+                <a href="/attraction/{{place.place_id}}"><button class="btn">Atrakcje</button></a>
                 
 
                     

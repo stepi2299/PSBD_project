@@ -67,6 +67,7 @@ def create_tables():
         """
         CREATE TABLE hotel (
             id_hotel SERIAL PRIMARY KEY,
+            name VARCHAR(50) NOT NULL,
             id_place INTEGER NOT NULL,
             link VARCHAR(400) NOT NULL,
             km_to_place REAL,
@@ -95,6 +96,7 @@ def create_tables():
         """
         CREATE TABLE attraction (
             id_attraction SERIAL PRIMARY KEY,
+            name VARCHAR(50) NOT NULL,
             id_place INTEGER NOT NULL,
             id_photo INTEGER NOT NULL,
             type VARCHAR(50) NOT NULL,
@@ -231,16 +233,16 @@ def create_tables():
         VALUES(%s, %s, %s, %s);
         """
     hotel_sql = """
-        INSERT INTO hotel(id_place, link, km_to_place, address_city, address_postal_code, address_street, address_number)
-        VALUES(%s, %s, %s, %s, %s, %s, %s);
+        INSERT INTO hotel(name, id_place, link, km_to_place, address_city, address_postal_code, address_street, address_number)
+        VALUES(%s, %s, %s, %s, %s, %s, %s, %s);
         """
     transport_sql = """
         INSERT INTO transport(id_place, link, km_to_place, type, address_city, address_latitude, address_longitude)
         VALUES(%s, %s, %s, %s, %s, %s, %s);
         """
     attractions_sql = """
-        INSERT INTO attraction(id_place, id_photo, type, price, description, open_hours, link)
-        VALUES(%s, %s, %s, %s, %s, %s, %s);
+        INSERT INTO attraction(id_place, name, id_photo, type, price, description, open_hours, link)
+        VALUES(%s, %s, %s, %s, %s, %s, %s, %s);
         """
     place_sql = """
         INSERT INTO place(
@@ -436,6 +438,7 @@ def create_tables():
         cur.execute(
             hotel_sql,
             (
+                "Paris Bastille",
                 1,
                 "https://www.hotelparisbastille.com/fr/?gclid=Cj0KCQjw8IaGBhCHARIsAGIRRYrNQDqbBua0gWeNK-_Zi6W6JFKC0fgsK3zKxUJ3P7hq_6goqqxWMsYaAggOEALw_wcB",
                 1,
@@ -448,6 +451,7 @@ def create_tables():
         cur.execute(
             hotel_sql,
             (
+                "Novotel Paris Centre",
                 1,
                 "https://www.guestreservations.com/novotel-paris-centre-gare-montparnasse/booking?gclid=Cj0KCQjw8IaGBhCHARIsAGIRRYpipawQ3WgkjZbD9vKbEFMZEqryTLSQPqLTTlIUSNHF380-2SbRIvYaAh8DEALw_wcB",
                 5,
@@ -460,6 +464,7 @@ def create_tables():
         cur.execute(
             hotel_sql,
             (
+                "Barcelona Hotel 1",
                 2,
                 "https://www.hotelbarcelonaprincess.com/en/?gclid=Cj0KCQjw8IaGBhCHARIsAGIRRYqS4joAX0T4g8M1Nit_el6l7Cq9MnqDADUTNkHmGfIDROhmAr2pevAaAh1yEALw_wcB",
                 8,
@@ -472,6 +477,7 @@ def create_tables():
         cur.execute(
             hotel_sql,
             (
+                "Barcelona hotel 2",
                 2,
                 "https://www.booking.com/hotel/es/w-barcelona.pl.html",
                 4,
@@ -484,6 +490,7 @@ def create_tables():
         cur.execute(
             hotel_sql,
             (
+                "Venice hotel",
                 3,
                 "https://www.booking.com/hotel/it/alloggiagliartistivenezia.pl.html?aid=311264;label=venice-QfIhceaSz2K1nIPll0SohwS390691190566%3Apl%3Ata%3Ap11580%3Ap2%3Aac%3Aap%3Aneg%3Afi%3Atikwd-1578401895%3Alp9061060%3Ali%3Adec%3Adm%3Appccp%3DUmFuZG9tSVYkc2RlIyh9YbSsBl3MCvHsyw-mWuxZ2N8;sid=a14583ce149d835e3785710b1359fba0;sig=v1OfeuI1Hk",
                 3,
@@ -496,6 +503,7 @@ def create_tables():
         cur.execute(
             hotel_sql,
             (
+                "rio novo venice",
                 3,
                 "https://www.booking.com/hotel/it/nh-venezia-rio-novo.pl.html",
                 5,
@@ -585,6 +593,7 @@ def create_tables():
             attractions_sql,
             (
                 1,
+                "Eiffel Tower",
                 1,
                 "Architecture",
                 25.60,
@@ -597,6 +606,7 @@ def create_tables():
             attractions_sql,
             (
                 1,
+                "Luwr",
                 4,
                 "Museum",
                 17,
@@ -609,6 +619,7 @@ def create_tables():
             attractions_sql,
             (
                 2,
+                "Sagrada de Familia",
                 2,
                 "Architecture",
                 30,
@@ -621,6 +632,7 @@ def create_tables():
             attractions_sql,
             (
                 2,
+                "Camp Nou",
                 5,
                 "Sport stadium",
                 10,
@@ -633,6 +645,7 @@ def create_tables():
             attractions_sql,
             (
                 3,
+                "Venice channels",
                 3,
                 "Sightseeing tour",
                 22.30,
@@ -645,6 +658,7 @@ def create_tables():
             attractions_sql,
             (
                 3,
+                "Bazylika Świętego Marka",
                 6,
                 "Architecture",
                 31,
@@ -666,9 +680,10 @@ def create_tables():
 
 
 def adding_photo(file_name):
-    path = os.path.dirname(__file__)
-    photo_path = os.path.join(path, "initial_data", file_name)
-    file_size = os.path.getsize(photo_path)
+    path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    file_path = os.path.join(path, "app", "static", "initial_data", file_name)
+    photo_path = os.path.join("static", "initial_data", file_name)
+    file_size = os.path.getsize(file_path)
     photo_name, photo_extension = file_name.split(".")
     tmp = (photo_name, file_size, photo_path, photo_extension)
     return tmp

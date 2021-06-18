@@ -5,12 +5,24 @@ import datetime
 
 @attr.s
 class Photo:
-    id: int = attr.ib()
+    id_photo: int = attr.ib()
     name: str = attr.ib()
     file_size: float = attr.ib()
     file_path: str = attr.ib()
     file_extension: str = attr.ib()
 
+
+@attr.s
+class PhotoPlace(Photo):
+    id_place: int = attr.ib()
+    place_name: str = attr.ib()
+
+
+
+@attr.s
+class PhotoAttraction(Photo):
+    id_place: int = attr.ib()
+    attraction_name: str = attr.ib()
 
 @attr.s
 class Video:
@@ -33,6 +45,7 @@ class Weather:
 @attr.s
 class Attraction:
     id: int = attr.ib()
+    name: str = attr.ib()
     id_place: int = attr.ib()
     id_photo: int = attr.ib()
     type: str = attr.ib()
@@ -50,9 +63,11 @@ class Address:
     house_number: str = attr.ib()
 
 
+
 @attr.s
 class Hotel(Address):
     id: int = attr.ib()
+    name: str = attr.ib()
     id_place: int = attr.ib()
     distance: float = attr.ib()
     link: str = attr.ib()
