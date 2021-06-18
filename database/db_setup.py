@@ -95,6 +95,7 @@ def create_tables():
         """
         CREATE TABLE attraction (
             id_attraction SERIAL PRIMARY KEY,
+            name VARCHAR(50) NOT NULL,
             id_place INTEGER NOT NULL,
             id_photo INTEGER NOT NULL,
             type VARCHAR(50) NOT NULL,
@@ -239,8 +240,8 @@ def create_tables():
         VALUES(%s, %s, %s, %s, %s, %s, %s);
         """
     attractions_sql = """
-        INSERT INTO attraction(id_place, id_photo, type, price, description, open_hours, link)
-        VALUES(%s, %s, %s, %s, %s, %s, %s);
+        INSERT INTO attraction(id_place, name, id_photo, type, price, description, open_hours, link)
+        VALUES(%s, %s, %s, %s, %s, %s, %s, %s);
         """
     place_sql = """
         INSERT INTO place(
@@ -585,6 +586,7 @@ def create_tables():
             attractions_sql,
             (
                 1,
+                "Eiffel Tower",
                 1,
                 "Architecture",
                 25.60,
@@ -597,6 +599,7 @@ def create_tables():
             attractions_sql,
             (
                 1,
+                "Luwr",
                 4,
                 "Museum",
                 17,
@@ -609,6 +612,7 @@ def create_tables():
             attractions_sql,
             (
                 2,
+                "Sagrada de Familia",
                 2,
                 "Architecture",
                 30,
@@ -621,6 +625,7 @@ def create_tables():
             attractions_sql,
             (
                 2,
+                "Camp Nou",
                 5,
                 "Sport stadium",
                 10,
@@ -633,6 +638,7 @@ def create_tables():
             attractions_sql,
             (
                 3,
+                "Venice channels",
                 3,
                 "Sightseeing tour",
                 22.30,
@@ -645,6 +651,7 @@ def create_tables():
             attractions_sql,
             (
                 3,
+                "Bazylika Świętego Marka",
                 6,
                 "Architecture",
                 31,
@@ -666,9 +673,10 @@ def create_tables():
 
 
 def adding_photo(file_name):
-    path = os.path.dirname(__file__)
-    photo_path = os.path.join(path, "initial_data", file_name)
-    file_size = os.path.getsize(photo_path)
+    path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    file_path = os.path.join(path, "app", "static", "initial_data", file_name)
+    photo_path = os.path.join("static", "initial_data", file_name)
+    file_size = os.path.getsize(file_path)
     photo_name, photo_extension = file_name.split(".")
     tmp = (photo_name, file_size, photo_path, photo_extension)
     return tmp

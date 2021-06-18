@@ -1,7 +1,7 @@
 import psycopg2
 
 from app import config
-from core.datastructures import User, Place, Attraction, Photo, Transport, Hotel
+from core.datastructures import *
 
 
 def making_connection():
@@ -94,13 +94,14 @@ def choosing_command(key):
                                                         address_latitude,
                                                         address_longitude)
                             VALUES(%s, %s, %s, %s, %s, %s, %s) RETURNING id_communication""",
-        "attraction": """"INSERT INTO attraction(id_place, id_photo,
+        "attraction": """"INSERT INTO attraction(id_place, name,
+                                                    id_photo,
                                                      type,
                                                      price,
                                                      description,
                                                      open_hours,
                                                      link)
-                            VALUES(%s, %s, %s, %s, %s, %s, %s) RETURNING id_attraction""",
+                            VALUES(%s, %s, %s, %s, %s, %s, %s, %s) RETURNING id_attraction""",
         "place": """"INSERT INTO place(name, 
                                                 id_photo,
                                                 adding_date,
@@ -339,7 +340,7 @@ def get_photo(id_photo):
 
         row = cur.fetchone()
         photo = Photo(
-            id=row[0],
+            id_photo=row[0],
             name=row[1],
             file_size=row[2],
             file_path=row[3],
@@ -422,13 +423,14 @@ def get_attraction(id_place=None):
         while row is not None:
             attraction = Attraction(
                 id=row[0],
-                id_place=row[1],
-                id_photo=row[2],
-                type=row[3],
-                price=row[4],
-                description=row[5],
-                open_hours=row[6],
-                link=row[7],
+                name=row[1],
+                id_place=row[2],
+                id_photo=row[3],
+                type=row[4],
+                price=row[5],
+                description=row[6],
+                open_hours=row[7],
+                link=row[8],
             )
             attractions.append(attraction)
             row = cur.fetchone()
@@ -440,3 +442,54 @@ def get_attraction(id_place=None):
         if conn is not None:
             conn.close()
         return attractions  # return list of returned attractions
+
+
+def get_photos_with_param(param):
+    command = f"""SELECT {param}.id_place, {param}.name, ph.*
+                      FROM {param} JOIN photo as ph USING(id_photo)
+                        WHERE ph.id_photo = {param}.id_photo"""
+    conn = None
+    photos = []
+    try:
+        conn = making_connection2()
+
+        # creating a cursor
+        cur = conn.cursor()
+
+        # execute statement
+        cur.execute(command)  # as a parameter SQL code
+        print("Successfully executed SQL code")
+
+        row = cur.fetchone()
+
+        while row is not None:
+            if param == "place":
+                photo = PhotoPlace(
+                    id_place=row[0],
+                    place_name=row[1],
+                    id_photo=row[2],
+                    name=row[3],
+                    file_size=row[4],
+                    file_path=row[5],
+                    file_extension=row[6],
+                )
+            elif param == "attraction":
+                photo = PhotoAttraction(
+                    id_place=row[0],
+                    attraction_name=row[1],
+                    id_photo=row[2],
+                    name=row[3],
+                    file_size=row[4],
+                    file_path=row[5],
+                    file_extension=row[6],
+                )
+            photos.append(photo)
+            row = cur.fetchone()
+
+        cur.close()
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+        return photos  # return list of returned photos
