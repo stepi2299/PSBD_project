@@ -80,13 +80,14 @@ def choosing_command(key):
                                               file_path, 
                                               extension)
                             VALUES(%s, %s, %s, %s) RETURNING id_photo""",
-        "hotel": """INSERT INTO hotel(id_place,link, 
+        "hotel": """INSERT INTO hotel(name, id_place,
+                                                link, 
                                               km_to_place, 
                                               address_city, 
                                               address_postal_code, 
                                               address_street, 
                                               address_number)
-                            VALUES(%s, %s, %s, %s, %s, %s, %s) RETURNING id_hotel""",
+                            VALUES(%s, %s, %s, %s, %s, %s, %s, %s) RETURNING id_hotel""",
         "communication": """INSERT INTO communication(id_place, link,
                                                         km_to_place,
                                                         type,
@@ -260,13 +261,14 @@ def get_hotels(id_place):
         while row is not None:
             hotel = Hotel(
                 id=row[0],
-                id_place=row[1],
-                link=row[2],
-                distance=row[3],
-                city=row[4],
-                postal_address=row[5],
-                street=row[6],
-                house_number=row[7],
+                name=row[1],
+                id_place=row[2],
+                link=row[3],
+                distance=row[4],
+                city=row[5],
+                postal_address=row[6],
+                street=row[7],
+                house_number=row[8],
             )
             hotels.append(hotel)
             row = cur.fetchone()

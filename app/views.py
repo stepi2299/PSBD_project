@@ -63,7 +63,32 @@ def user(login):
 
 @app.route("/place/<int:pk>")
 def place(pk):
-    return render_template("place.html", title="Place Profile")
+    place = get_places("id_place", pk)[0]
+    place_dict = {"place_id": place.id, "name": place.name}
+    photo = get_photo(place.id_photo)
+    photo = {"path": photo.file_path}
+    hotels = get_hotels(pk)
+    hotels_list = []
+    for hotel in hotels:
+        hotels_list.append(
+            {
+                "name": hotel.name,
+                "city": hotel.city,
+                "street": hotel.street,
+                "number": hotel.house_number,
+                "distance": hotel.distance,
+                "link": hotel.link,
+            }
+        )
+    transports = get_transport(pk)
+    return render_template(
+        "place.html",
+        title="Place Profile",
+        place=place_dict,
+        photo=photo,
+        hotels=hotels_list,
+        transports=transports,
+    )
 
 
 @app.route("/attraction/<int:pk>")

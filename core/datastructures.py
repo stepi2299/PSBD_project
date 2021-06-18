@@ -67,6 +67,7 @@ class Address:
 @attr.s
 class Hotel(Address):
     id: int = attr.ib()
+    name: str = attr.ib()
     id_place: int = attr.ib()
     distance: float = attr.ib()
     link: str = attr.ib()
