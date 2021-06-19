@@ -190,6 +190,74 @@ def register_user(user):
     )
 
 
+def add_hotel_to_database(hotel):
+    connect_and_insert_data(
+        "hotel",
+        (
+            #id_hotel?
+            hotel.name,
+            hotel.id_place,
+            hotel.link,
+            hotel.distance,
+            hotel.city,
+            hotel.postal_address,
+            hotel.street,
+            hotel.house_number,
+        ),
+    )
+
+
+def add_attraction_to_database(attraction):
+    connect_and_insert_data(
+        "attraction",
+        (
+            #id_attraction ?
+            attraction.name,
+            attraction.id_place,
+            attraction.id_photo,
+            attraction.type,
+            attraction.price,
+            attraction.description,
+            attraction.open_hours,
+            attraction.link,
+        ),
+    )
+
+
+def add_transport_to_database(transport):
+    connect_and_insert_data(
+        "transport",
+        (
+            #id_transport?
+            transport.id_place,
+            transport.link,
+            transport.distance,
+            transport.type,
+            transport.city,
+            transport.latitude,
+            transport.longitude,
+        ),
+    )
+
+
+def add_place_to_database(place):
+    connect_and_insert_data(
+        "place",
+        (
+            #id_place ?
+            place.id_photo,
+            place.name,
+            place.create_date,
+            place.country,
+            place.region,
+            place.language,
+            place.latitude,
+            place.longitude,
+            place.admin_login,
+        ),
+    )
+
+
 def connect_and_pull_users(valid, action="login"):
     """Connect to the PostgreSQL database server"""
     conn = None

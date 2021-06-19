@@ -81,7 +81,10 @@ class Transport:
     link: str = attr.ib()
     type: str = attr.ib()
     city: str = attr.ib()
-    coordinates: str = attr.ib()
+    # TODO check if there are coordinates data types
+    #coordinates: str = attr.ib()
+    latitude: str = attr.ib()
+    longitude: str = attr.ib()
 
 
 @attr.s
@@ -93,9 +96,11 @@ class Place:
     country: str = attr.ib()
     region: str = attr.ib()
     language: str = attr.ib()
-    coordinates: str = attr.ib()  # TODO check if there are coordinates data types
+    # TODO check if there are coordinates data types
+    # coordinates: str = attr.ib()
+    latitude: str = attr.ib()
+    longitude: str = attr.ib()
     admin_login: str = attr.ib()
-
 
 @attr.s
 class Post:

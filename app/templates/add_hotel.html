@@ -4,24 +4,39 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel administratora</title>
+    <title>Administrator panel</title>
     <link rel="stylesheet" href="../../static/css/style_add.css">
 </head>
 <body>
 <div class="wrapper">
     <div class="add_place">
         <form action="#" method="post">
-            <label for="name">Nazwa hotelu</label>
-            <input type="text" placeholder="Wpisz nazwę hotelu" class="name" name="name">
-            <label for="city">Miasto</label>
-            <input type="text" placeholder="Wpisz miasto w którym znajduje się dodane przez ciebie hotel" class="country" name="country">
-            <label for="postal_addres">Adres pocztowy</label>
-            <input type="text" placeholder="Wpisz adres pocztowy hotelu" class="region" name="region">
-            <label for="street">Ulica</label>
-            <input type="text" placeholder="Wpisz ulicę na której znajduje się hotel" class="language" name="language">
-            <label for="number">Numer domu</label>
-            <input type="text" placeholder="Wpisz numer domu pod którym znajduje się hotel" class="coordinates" name="coordinates">
-            <input type="submit" class="btn" value="Dodaj">
+            {{ form.hidden_tag() }}
+                <p>
+                    {{form.name.label}}<br>
+                    {{form.name(class="name", placeholder="Enter hotel name")}}
+                </p>
+                <p>
+                    {{form.city.label}}<br>
+                    {{form.city(class="city", placeholder="Enter the place where the hotel is located")}}
+                </p>
+                <p>
+                    {{form.postal_code.label}}<br>
+                    {{form.postal_code(class="postal-code", placeholder="Enter your hotel postal code")}}
+                </p>
+                <p>
+                    {{form.street.label}}<br>
+                    {{form.street(class="street", placeholder="Enter the street where the hotel is located")}}
+                </p>
+                <p>
+                    {{form.house_number.label}}<br>
+                    {{form.house_number(class="house-number", placeholder="Enter the house number where the hotel is located")}}
+                </p>
+                <p>
+                    {{form.site_link.label}}<br>
+                    {{form.site_link(class="site-link", placeholder="Enter the link of the hotel site")}}
+                </p>
+                    {{form.submit(class="btn", value="Add")}}
         </form>
     </div>
 </div>    
