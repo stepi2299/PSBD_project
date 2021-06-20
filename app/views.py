@@ -151,7 +151,7 @@ def add_hotel():
     form = HotelForm()
     if form.validate_on_submit():
         places = get_places()
-        id_place_help = 0
+        id_place_help = None
         for place in places:
             if place.name == HotelForm.city:
                 id_place_help = place.id
@@ -161,7 +161,6 @@ def add_hotel():
             postal_address=form.postal_code.data,
             street=form.street.data,
             house_number=form.house_number.data,
-            #TODO didnt know what to do with this id :( (with others too)
             id=None,
             name=form.name.data,
             id_place=id_place_help,

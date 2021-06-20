@@ -53,3 +53,12 @@ input {
     font-weight: 600;
     background-color: dimgrey;
 }
+
+.add_hotel {
+    width: 40%;
+    height: 60vh;
+    background-color: black;
+    color: white;
+    border: 10px solid gold;
+    display: block;
+    margin: 0 auto;

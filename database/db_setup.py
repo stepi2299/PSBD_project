@@ -68,7 +68,7 @@ def create_tables():
         CREATE TABLE hotel (
             id_hotel SERIAL PRIMARY KEY,
             name VARCHAR(50) NOT NULL,
-            id_place INTEGER NOT NULL,
+            id_place INTEGER,
             link VARCHAR(400) NOT NULL,
             km_to_place REAL,
             address_city VARCHAR(100) NOT NULL,
@@ -82,7 +82,7 @@ def create_tables():
         """
         CREATE TABLE transport (
             id_transport SERIAL PRIMARY KEY,
-            id_place INTEGER NOT NULL,
+            id_place INTEGER,
             link VARCHAR(400) NOT NULL,
             km_to_place REAL,
             type VARCHAR(50) NOT NULL,
@@ -97,7 +97,7 @@ def create_tables():
         CREATE TABLE attraction (
             id_attraction SERIAL PRIMARY KEY,
             name VARCHAR(50) NOT NULL,
-            id_place INTEGER NOT NULL,
+            id_place INTEGER,
             id_photo INTEGER NOT NULL,
             type VARCHAR(50) NOT NULL,
             price REAL,

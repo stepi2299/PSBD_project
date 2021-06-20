@@ -88,7 +88,7 @@ def choosing_command(key):
                                               address_street, 
                                               address_number)
                             VALUES(%s, %s, %s, %s, %s, %s, %s, %s) RETURNING id_hotel""",
-        "communication": """INSERT INTO communication(id_place, link,
+        "transport": """INSERT INTO transport(id_place, link,
                                                         km_to_place,
                                                         type,
                                                         address_city,
@@ -194,7 +194,6 @@ def add_hotel_to_database(hotel):
     connect_and_insert_data(
         "hotel",
         (
-            #id_hotel?
             hotel.name,
             hotel.id_place,
             hotel.link,
@@ -211,7 +210,6 @@ def add_attraction_to_database(attraction):
     connect_and_insert_data(
         "attraction",
         (
-            #id_attraction ?
             attraction.name,
             attraction.id_place,
             attraction.id_photo,
@@ -378,7 +376,8 @@ def get_transport(id_place):
                 distance=row[3],
                 type=row[4],
                 city=row[5],
-                coordinates="",
+                latitude="",
+                longitude=""
             )
             means_of_transports.append(transport)
             row = cur.fetchone()

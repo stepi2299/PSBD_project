@@ -10,8 +10,8 @@
 <body>
 <div class="wrapper">
     
-    <div class="add_place">
-        <form action="#" method="post">
+    <div class="add_hotel">
+        <form action="#" method="post" enctype="multipart/form-data">
             {{ form.hidden_tag() }}
                 <p>
                     {{form.name.label}}<br>
@@ -20,6 +20,10 @@
                 <p>
                     {{form.type.label}}<br>
                     {{form.type(class="type", placeholder="Enter type of attraction")}}
+                </p>
+                <p>
+                    {{form.photo.label}}<br>
+                    {{form.photo(class="photo", placeholder="Enter photo of attraction")}}
                 </p>
                 <p>
                     {{form.price.label}}<br>

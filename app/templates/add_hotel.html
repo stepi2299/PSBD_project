@@ -9,7 +9,7 @@
 </head>
 <body>
 <div class="wrapper">
-    <div class="add_place">
+    <div class="add_hotel">
         <form action="#" method="post">
             {{ form.hidden_tag() }}
                 <p>
@@ -35,6 +35,10 @@
                 <p>
                     {{form.site_link.label}}<br>
                     {{form.site_link(class="site-link", placeholder="Enter the link of the hotel site")}}
+                </p>
+                <p>
+                    {{form.distance.label}}<br>
+                    {{form.distance(class="distance", placeholder="Enter the distance from Hotel to center of the city")}}
                 </p>
                     {{form.submit(class="btn", value="Add")}}
         </form>

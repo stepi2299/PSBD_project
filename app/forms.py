@@ -5,10 +5,11 @@ from wtforms import (
     BooleanField,
     IntegerField,
     SubmitField,
-    FileField,
 )
-from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, regexp, re
+from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 from database.db_client import connect_and_pull_users, get_places, get_hotels
+from flask_wtf.file import FileField, FileAllowed, FileRequired
+from app import photos
 
 
 class LoginForm(FlaskForm):
@@ -83,6 +84,7 @@ class HotelForm(FlaskForm):
 
 class AttractionForm(FlaskForm):
     name = StringField("Name", validators=[DataRequired()])
+    photo = FileField("Photo of attraction", validators=[FileAllowed(photos, 'Image only!'), FileRequired('File was empty!')])
     type = StringField("Type of attratcion", validators=[DataRequired()])
     price = StringField("Price", validators=[DataRequired()])
     description = StringField("Description", validators=[DataRequired()])
