@@ -455,7 +455,8 @@ def get_places(column_name=None, attribute_value=None):
                 country=row[4],
                 region=row[5],
                 language=row[6],
-                coordinates="",
+                latitude="",
+                longitude="",
                 admin_login=row[9],
             )
             places.append(place)
