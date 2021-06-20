@@ -94,7 +94,7 @@ def place(pk):
 @app.route("/attraction/<int:pk>")
 def attraction(pk):
     place = get_places("id_place", pk)[0]
-    place_dict = {"place_id": place.id, "name": place.name}
+    place_dict = {"name": place.name}
     attractions = get_attraction(pk)
     attractions_list = []
     for attraction in attractions:
