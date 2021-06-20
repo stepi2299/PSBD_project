@@ -93,7 +93,29 @@ def place(pk):
 
 @app.route("/attraction/<int:pk>")
 def attraction(pk):
-    return render_template("attraction_profile.html", title="Attraction Profile")
+    place = get_places("id_place", pk)[0]
+    place_dict = {"place_id": place.id, "name": place.name}
+    attractions = get_attraction(pk)
+    attractions_list = []
+    for attraction in attractions:
+        photo = get_photo(attraction.id_photo)
+        print(photo)
+        attractions_list.append(
+            {
+                "name": attraction.name,
+                "type": attraction.type,
+                "price": attraction.price,
+                "open_hours": attraction.open_hours,
+                "link": attraction.link,
+                "description": attraction.description,
+                "photo_path": photo.file_path
+            }
+        )
+
+    return render_template("attraction_profile.html",
+                           title="Attraction Profile",
+                           place=place_dict,
+                           attractions=attractions_list)
 
 
 @app.route("/register", methods=["GET", "POST"])
