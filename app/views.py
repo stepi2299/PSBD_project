@@ -1,11 +1,12 @@
-from app import app, login
-from flask import render_template, redirect, url_for, flash
+from app import app, login, photos
+from flask import render_template, redirect, url_for, flash, request
 from flask_login import current_user, login_user, logout_user, login_required
 from .forms import *
 from database.db_client import *
-from core.datastructures import User
+from core.datastructures import User, Hotel, Attraction, Transport, Place
 from werkzeug.security import generate_password_hash
 from datetime import datetime
+import os
 
 
 @login.user_loader
@@ -160,45 +161,132 @@ def login():
 @app.route("/logout")
 def logout():
     logout_user()
-    return redirect(url_for("index"))
+    return redirect(url_for('index'))
 
 
-@app.route("/admin_page", methods=["GET", "POST"])
+@app.route('/admin_page', methods=['GET', 'POST'])
 def admin_page():
-    return render_template("admin_page.html", title="Admin Page")
+    return render_template('admin_page.html', title='Admin Page')
 
 
-@app.route("/admin_page/hotel/", methods=["GET", "POST"])
+@app.route('/admin_page/hotel/', methods=['GET', 'POST'])
 def add_hotel():
     form = HotelForm()
     if form.validate_on_submit():
-        # tu inserty krystiana sie przydadza
-        return redirect(url_for("admin_page"))
-    return render_template("add_hotel.html", title="Add Hotel", form=form)
+        places = get_places()
+        for place in places:
+            if place.name == form.city.data:
+                id_place = place.id
+            else:
+                id_place = None
+        distance_help = float(form.distance.data)
+        hotel = Hotel(
+            city=form.city.data,
+            postal_address=form.postal_code.data,
+            street=form.street.data,
+            house_number=form.house_number.data,
+            id=None,
+            name=form.name.data,
+            id_place=id_place,
+            distance=distance_help,
+            link=form.site_link.data,
+        )
+        add_hotel_to_database(hotel)
+        flash("Thanks for adding a hotel!")
+        return redirect(url_for('admin_page'))
+    return render_template('add_hotel.html', title='Add Hotel', form=form)
 
 
-@app.route("/admin_page/attraction/", methods=["GET", "POST"])
+@app.route('/admin_page/attraction/', methods=['GET', 'POST'])
 def add_attraction():
     form = AttractionForm()
     if form.validate_on_submit():
-        # tu inserty krystiana sie przydadza
-        return redirect(url_for("admin_page"))
-    return render_template("add_attraction.html", title="Add Attraction", form=form)
+        photos.save(request.files['photo'])
+        photo = adding_photo(form.photo.data.filename)
+        photo_id = add_photo_to_database(photo)
+        places = get_places()
+        for place in places:
+            print(place.name)
+            if place.name == form.city.data:
+                id_place = place.id
+            else:
+                id_place = None
+        price_help = float(form.price.data)
+        attraction = Attraction(
+            id=None,
+            name=form.name.data,
+            city=form.city.data,
+            id_place=id_place,
+            id_photo=photo_id,
+            type=form.type.data,
+            description=form.description.data,
+            price=price_help,
+            open_hours=form.open_hours.data,
+            link=form.site_link.data,
+        )
+        add_attraction_to_database(attraction)
+        flash("Thanks for adding an attraction!")
+        return redirect(url_for('admin_page'))
+    return render_template('add_attraction.html', title='Add Attraction', form=form)
 
 
-@app.route("/admin_page/transport/", methods=["GET", "POST"])
+@app.route('/admin_page/transport/', methods=['GET', 'POST'])
 def add_transport():
     form = TransportForm()
     if form.validate_on_submit():
-        # tu inserty krystiana sie przydadza
-        return redirect(url_for("admin_page"))
-    return render_template("add_transport.html", title="Add Transport", form=form)
+        places = get_places()
+        for place in places:
+            if place.name == form.city.data:
+                id_place = place.id
+            else:
+                id_place = None
+        distance_help = float(form.distance.data)
+        transport = Transport(
+            id=None,
+            id_place=id_place,
+            distance=distance_help,
+            link=form.site_link.data,
+            type=form.type.data,
+            city=form.city.data,
+            longitude=form.longitude.data,
+            latitude=form.latitude.data,
+        )
+        add_transport_to_database(transport)
+        flash("Thanks for adding a transport!")
+        return redirect(url_for('admin_page'))
+    return render_template('add_transport.html', title='Add Transport', form=form)
 
 
-@app.route("/admin_page/place/", methods=["GET", "POST"])
+@app.route('/admin_page/place/', methods=['GET', 'POST'])
 def add_place():
     form = PlaceForm()
     if form.validate_on_submit():
-        # tu inserty krystiana sie przydadza
-        return redirect(url_for("admin_page"))
-    return render_template("add_place.html", title="Add Place", form=form)
+        photos.save(request.files['photo'])
+        photo = adding_photo(form.photo.data.filename)
+        photo_id = add_photo_to_database(photo)
+        place = Place(
+            id=None,
+            id_photo=photo_id,
+            name=form.name.data,
+            country=form.country.data,
+            region=form.region.data,
+            language=form.language.data,
+            latitude=form.latitude.data,
+            longitude=form.longitude.data,
+            #TODO check this (didn't know what to add here)
+            admin_login=None,
+            create_date=datetime.now(),
+        )
+        add_place_to_database(place)
+        flash("Thanks for adding a place!")
+        return redirect(url_for('admin_page'))
+    return render_template('add_place.html', title='Add Place', form=form)
+
+def adding_photo(file_name):
+    path = app.config["UPLOADED_PHOTOS_DEST"]
+    file_path = os.path.join(path, file_name)
+    photo_path = os.path.join("static", "photos", file_name)
+    file_size = os.path.getsize(file_path)
+    photo_name, photo_extension = file_name.split(".")
+    tmp = (photo_name, file_size, photo_path, photo_extension)
+    return tmp
