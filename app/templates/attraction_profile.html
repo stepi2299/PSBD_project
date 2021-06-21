@@ -10,132 +10,41 @@
 <body>
     <div class="wrapper">
     <header>
-        <p class="title">To warto zobaczyć w ...[Nazwa miejsca]</p>
+        <p class="title">To warto zobaczyć w {{place.name}}</p>
     </header>
     <main>
+        {% for attraction in attractions %}
         <section class="atraction">
             <dvi class="name">
-                <p>Nazwa atrakcji</p>
+                <p>{{attraction.name}}</p>
             </dvi>
             <div class="img_container">
-                <img src="./Obrazki/italy-1747913_640.jpg" alt="">
-                <img src="./Obrazki/rome-4087275_640.jpg" alt="">
-                <img src="./Obrazki/italy-1747913_640.jpg" alt="">
+                <center><img src="/{{attraction.photo_path}}" alt=""></center>
             </div>
             <div class="basic_information">
                 <table>
-                        <tr>
-                          <th>Rodzaj</th>
-                          <th>Cena</th>
-                          <th>Godziny otwarcia</th>
-                          <th>Link</th>
-                        </tr>
-                        <tr>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                        </tr>
+                    <tr>
+                        <th>Rodzaj</th>
+                        <th>Cena</th>
+                        <th>Godziny otwarcia</th>
+                        <th>Link</th>
+                    </tr>
+                    <tr>
+                        <td>{{attraction.type}}</td>
+                        <td>{{attraction.price}}</td>
+                        <td>{{attraction.open_hours}}</td>
+                        <td>{{attraction.link}}</td>
+                    </tr>
                 </table>
 
-                
+
             </div>
             <div class="description">
                 <p>Opis</p>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore delectus odit, minima cum, facere quas mollitia voluptatum vero necessitatibus corrupti excepturi voluptatibus quisquam laboriosam possimus dolor, dolorum nihil pariatur maiores?</p>
+                <p>{{attraction.description}}</p>
             </div>
         </section>
-        <section class="atraction">
-            <dvi class="name">
-                <p>Nazwa atrakcji</p>
-            </dvi>
-            <div class="img_container">
-                <img src="" alt="">
-                <img src="" alt="">
-                <img src="" alt="">
-            </div>
-            <div class="basic_information">
-                <table>
-                        <tr>
-                          <th>Rodzaj</th>
-                          <th>Cena</th>
-                          <th>Godziny otwarcia</th>
-                          <th>Link</th>
-                        </tr>
-                        <tr>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                        </tr>
-                </table>
-                
-            </div>
-            <div class="description">
-                <p>Opis</p>
-            </div>
-        </section>
-        <section class="atraction">
-            <dvi class="name">
-                <p>Nazwa atrakcji</p>
-            </dvi>
-            <div class="img_container">
-                <img src="" alt="">
-                <img src="" alt="">
-                <img src="" alt="">
-            </div>
-            <div class="basic_information">
-                <table>
-                        <tr>
-                          <th>Rodzaj</th>
-                          <th>Cena</th>
-                          <th>Godziny otwarcia</th>
-                          <th>Link</th>
-                        </tr>
-                        <tr>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                        </tr>
-                </table>
-                
-            </div>
-            <div class="description">
-                <p>Opis</p>
-            </div>
-        </section><section class="atraction">
-            <dvi class="name">
-                <p>Nazwa atrakcji</p>
-            </dvi>
-            <div class="img_container">
-                <img src="" alt="">
-                <img src="" alt="">
-                <img src="" alt="">
-            </div>
-            <div class="basic_information">
-                <table>
-                        <tr>
-                          <th>Rodzaj</th>
-                          <th>Cena</th>
-                          <th>Godziny otwarcia</th>
-                          <th>Link</th>
-                        </tr>
-                        <tr>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                        </tr>
-                </table>
-                
-            </div>
-            <div class="description">
-                <p>Opis</p>
-            </div>
-        </div>
-        </section>
+        {% endfor %}
     </main>
-    
 </body>
 </html>
