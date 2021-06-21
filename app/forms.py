@@ -85,6 +85,7 @@ class HotelForm(FlaskForm):
 class AttractionForm(FlaskForm):
     name = StringField("Name", validators=[DataRequired()])
     photo = FileField("Photo of attraction", validators=[FileAllowed(photos, 'Image only!'), FileRequired('File was empty!')])
+    city = StringField("City", validators=[DataRequired()])
     type = StringField("Type of attratcion", validators=[DataRequired()])
     price = StringField("Price", validators=[DataRequired()])
     description = StringField("Description", validators=[DataRequired()])
@@ -105,6 +106,8 @@ class TransportForm(FlaskForm):
 
 class PlaceForm(FlaskForm):
     name = StringField("Place name", validators=[DataRequired()])
+    photo = FileField("Photo of attraction",
+                      validators=[FileAllowed(photos, 'Image only!'), FileRequired('File was empty!')])
     country = StringField("Country", validators=[DataRequired()])
     region = StringField("Region", validators=[DataRequired()])
     language = StringField("Language", validators=[DataRequired()])

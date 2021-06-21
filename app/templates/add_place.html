@@ -9,12 +9,16 @@
 </head>
 <body>
 <div class="wrapper">
-    <div class="add_place">
+    <div class="add_hotel">
         <form action="#" method="post" enctype="multipart/form-data">
             {{ form.hidden_tag() }}
                 <p>
                     {{form.name.label}}<br>
                     {{form.name(class="name", placeholder="Enter name of the place")}}
+                </p>
+                <p>
+                    {{form.photo.label}}<br>
+                    {{form.photo(class="photo", placeholder="Enter photo of attraction")}}
                 </p>
                 <p>
                     {{form.country.label}}<br>

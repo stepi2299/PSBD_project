@@ -63,6 +63,7 @@ def connect_and_insert_data(table_name, value):
         # execute statement
         cur.execute(command, value)  # as a parameter SQL code
         print("Successfully executed SQL code")
+        id = cur.fetchone()
         cur.close()
         conn.commit()
         print("Successfully inserting new data into database")
@@ -71,6 +72,10 @@ def connect_and_insert_data(table_name, value):
     finally:
         if conn is not None:
             conn.close()
+        try:
+            return id[0]
+        except:
+            return None
 
 
 def choosing_command(key):
@@ -94,24 +99,26 @@ def choosing_command(key):
                                                         address_city,
                                                         address_latitude,
                                                         address_longitude)
-                            VALUES(%s, %s, %s, %s, %s, %s, %s) RETURNING id_communication""",
-        "attraction": """"INSERT INTO attraction(id_place, name,
+                            VALUES(%s, %s, %s, %s, %s, %s, %s) RETURNING id_transport""",
+        "attraction": """INSERT INTO attraction(id_place, name,
+                                                    city,
                                                     id_photo,
                                                      type,
                                                      price,
                                                      description,
                                                      open_hours,
                                                      link)
-                            VALUES(%s, %s, %s, %s, %s, %s, %s, %s) RETURNING id_attraction""",
-        "place": """"INSERT INTO place(name, 
-                                                id_photo,
+                            VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING id_attraction""",
+        "place": """INSERT INTO place(id_photo,
+                                                name,
                                                 adding_date,
                                                 localisation_country,
                                                 localisation_region,
                                                 localisation_language,
                                                 localisation_latitude,
-                                                localisation_longitude)
-                            VALUES(%s, %s, %s, %s, %s, %s, %s, %s) RETURNING id_place""",
+                                                localisation_longitude,
+                                                login_admin)
+                            VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING id_place""",
         "weather": """INSERT INTO weather(id_place, weather_date,
                                                   cloudy,
                                                   humidity,
@@ -210,8 +217,9 @@ def add_attraction_to_database(attraction):
     connect_and_insert_data(
         "attraction",
         (
-            attraction.name,
             attraction.id_place,
+            attraction.name,
+            attraction.city,
             attraction.id_photo,
             attraction.type,
             attraction.price,
@@ -226,7 +234,6 @@ def add_transport_to_database(transport):
     connect_and_insert_data(
         "transport",
         (
-            #id_transport?
             transport.id_place,
             transport.link,
             transport.distance,
@@ -242,7 +249,6 @@ def add_place_to_database(place):
     connect_and_insert_data(
         "place",
         (
-            #id_place ?
             place.id_photo,
             place.name,
             place.create_date,
@@ -254,6 +260,15 @@ def add_place_to_database(place):
             place.admin_login,
         ),
     )
+
+
+def add_photo_to_database(photo):
+    w = connect_and_insert_data(
+        "photo",
+        (
+            photo
+        ))
+    return w
 
 
 def connect_and_pull_users(valid, action="login"):
@@ -494,13 +509,14 @@ def get_attraction(id_place=None):
             attraction = Attraction(
                 id=row[0],
                 name=row[1],
-                id_place=row[2],
-                id_photo=row[3],
-                type=row[4],
-                price=row[5],
-                description=row[6],
-                open_hours=row[7],
-                link=row[8],
+                city=row[2],
+                id_place=row[3],
+                id_photo=row[4],
+                type=row[5],
+                price=row[6],
+                description=row[7],
+                open_hours=row[8],
+                link=row[9],
             )
             attractions.append(attraction)
             row = cur.fetchone()

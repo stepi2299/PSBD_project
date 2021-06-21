@@ -62,3 +62,13 @@ input {
     border: 10px solid gold;
     display: block;
     margin: 0 auto;
+}
+.add_attraction {
+    width: 40%;
+    height: 70vh;
+    background-color: black;
+    color: white;
+    border: 10px solid gold;
+    display: block;
+    margin: 0 auto;
+}

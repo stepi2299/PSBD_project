@@ -9,4 +9,4 @@ class Config(object):
     DATABASE_USER = os.environ.get('DATABASE_USER', 'postgres')
     DATABASE_PASSWORD = os.environ.get('DATABASE_PASSWORD', 'postgres')
     DATABASE_PORT = os.environ.get('DATABASE_PORT', 5432)
-    UPLOADED_PHOTOS_DEST = os.path.join(basedir, 'app', 'static', 'photos')
+    UPLOADED_PHOTOS_DEST = os.path.join(basedir, "app", "static", "photos")

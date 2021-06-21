@@ -97,6 +97,7 @@ def create_tables():
         CREATE TABLE attraction (
             id_attraction SERIAL PRIMARY KEY,
             name VARCHAR(50) NOT NULL,
+            city VARCHAR(50),
             id_place INTEGER,
             id_photo INTEGER NOT NULL,
             type VARCHAR(50) NOT NULL,
@@ -241,8 +242,8 @@ def create_tables():
         VALUES(%s, %s, %s, %s, %s, %s, %s);
         """
     attractions_sql = """
-        INSERT INTO attraction(id_place, name, id_photo, type, price, description, open_hours, link)
-        VALUES(%s, %s, %s, %s, %s, %s, %s, %s);
+        INSERT INTO attraction(id_place, name, city, id_photo, type, price, description, open_hours, link)
+        VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s);
         """
     place_sql = """
         INSERT INTO place(
@@ -594,6 +595,7 @@ def create_tables():
             (
                 1,
                 "Eiffel Tower",
+                "Paris",
                 1,
                 "Architecture",
                 25.60,
@@ -607,6 +609,7 @@ def create_tables():
             (
                 1,
                 "Luwr",
+                "Paris",
                 4,
                 "Museum",
                 17,
@@ -620,6 +623,7 @@ def create_tables():
             (
                 2,
                 "Sagrada de Familia",
+                "Barcelona",
                 2,
                 "Architecture",
                 30,
@@ -633,6 +637,7 @@ def create_tables():
             (
                 2,
                 "Camp Nou",
+                "Barcelona",
                 5,
                 "Sport stadium",
                 10,
@@ -646,6 +651,7 @@ def create_tables():
             (
                 3,
                 "Venice channels",
+                "Venice",
                 3,
                 "Sightseeing tour",
                 22.30,
@@ -659,6 +665,7 @@ def create_tables():
             (
                 3,
                 "Bazylika Świętego Marka",
+                "Venice",
                 6,
                 "Architecture",
                 31,
