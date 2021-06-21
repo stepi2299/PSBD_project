@@ -174,11 +174,10 @@ def add_hotel():
     form = HotelForm()
     if form.validate_on_submit():
         places = get_places()
+        id_place = None
         for place in places:
             if place.name == form.city.data:
                 id_place = place.id
-            else:
-                id_place = None
         distance_help = float(form.distance.data)
         hotel = Hotel(
             city=form.city.data,
@@ -205,12 +204,11 @@ def add_attraction():
         photo = adding_photo(form.photo.data.filename)
         photo_id = add_photo_to_database(photo)
         places = get_places()
+        id_place = None
         for place in places:
             print(place.name)
             if place.name == form.city.data:
                 id_place = place.id
-            else:
-                id_place = None
         price_help = float(form.price.data)
         attraction = Attraction(
             id=None,
@@ -235,11 +233,10 @@ def add_transport():
     form = TransportForm()
     if form.validate_on_submit():
         places = get_places()
+        id_place = None
         for place in places:
             if place.name == form.city.data:
                 id_place = place.id
-            else:
-                id_place = None
         distance_help = float(form.distance.data)
         transport = Transport(
             id=None,
