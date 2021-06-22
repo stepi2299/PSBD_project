@@ -5,10 +5,11 @@ from wtforms import (
     BooleanField,
     IntegerField,
     SubmitField,
-    FileField,
 )
-from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, regexp, re
-from database.db_client import connect_and_pull_users
+from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
+from database.db_client import connect_and_pull_users, get_places, get_hotels
+from flask_wtf.file import FileField, FileAllowed, FileRequired
+from app import photos
 
 
 class LoginForm(FlaskForm):
@@ -48,18 +49,68 @@ class RegisterForm(FlaskForm):
             field.data = re.sub(r"[^a-z0-9_.-]", "_", field.data)
     """
 
-
+# TODO checking if the "house number" is a number
 class HotelForm(FlaskForm):
-    pass
+    name = StringField("Hotel name", validators=[DataRequired()])
+    city = StringField("City", validators=[DataRequired()])
+    postal_code = StringField("Postal Code", validators=[DataRequired()])
+    street = StringField("Street", validators=[DataRequired()])
+    house_number = StringField("Address number", validators=[DataRequired()])
+    site_link = StringField("Hotel site link", validators=[DataRequired()]) #soon - change to "not required"
+    distance = StringField("Kilometers from center", validators=[DataRequired()]) #idk from where
+    submit = SubmitField("Add")
+
+    def no_existing_place(self):
+        places = get_places()
+        no_place = False
+        for place in places:
+            if place.name == HotelForm.city:
+                no_place = True
+        if not no_place:
+            raise ValidationError("There is no city named like this.")
+
+    def already_existing_hotel(self):
+        places = get_places()
+        id_place = 0
+        for place in places:
+            if place.name == HotelForm.city:
+                id_place = place.id
+        if id_place != 0:
+            hotels = get_hotels(id_place)
+            for hotel in hotels:
+                if hotel.city == HotelForm.city and hotel.street == HotelForm.street:
+                    raise ValidationError("This hotel already exists.")
 
 
 class AttractionForm(FlaskForm):
-    pass
+    name = StringField("Name", validators=[DataRequired()])
+    photo = FileField("Photo of attraction", validators=[FileAllowed(photos, 'Image only!'), FileRequired('File was empty!')])
+    city = StringField("City", validators=[DataRequired()])
+    type = StringField("Type of attratcion", validators=[DataRequired()])
+    price = StringField("Price", validators=[DataRequired()])
+    description = StringField("Description", validators=[DataRequired()])
+    open_hours = StringField("Open hours", validators=[DataRequired()])
+    site_link = StringField("Attraction site link", validators=[DataRequired()])  # soon - change to "not required"
+    submit = SubmitField("Add")
 
 
 class TransportForm(FlaskForm):
-    pass
+    site_link = StringField("Transport site link", validators=[DataRequired()])  # soon - change to "not required"
+    distance = StringField("Kilometers from center", validators=[DataRequired()])  # idk from where
+    type = StringField("Type of transport", validators=[DataRequired()])
+    city = StringField("City", validators=[DataRequired()])
+    latitude = StringField("Latitude", validators=[DataRequired()])
+    longitude = StringField("Longitude", validators=[DataRequired()])
+    submit = SubmitField("Add")
 
 
 class PlaceForm(FlaskForm):
-    pass
+    name = StringField("Place name", validators=[DataRequired()])
+    photo = FileField("Photo of attraction",
+                      validators=[FileAllowed(photos, 'Image only!'), FileRequired('File was empty!')])
+    country = StringField("Country", validators=[DataRequired()])
+    region = StringField("Region", validators=[DataRequired()])
+    language = StringField("Language", validators=[DataRequired()])
+    latitude = StringField("Latitude", validators=[DataRequired()])
+    longitude = StringField("Longitude", validators=[DataRequired()])
+    submit = SubmitField("Add")

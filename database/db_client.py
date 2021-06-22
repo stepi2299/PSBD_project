@@ -1,7 +1,7 @@
 import psycopg2
 
 from app import config
-from core.datastructures import User, Place, Attraction, Photo, Transport, Hotel
+from core.datastructures import *
 
 
 def making_connection():
@@ -63,6 +63,7 @@ def connect_and_insert_data(table_name, value):
         # execute statement
         cur.execute(command, value)  # as a parameter SQL code
         print("Successfully executed SQL code")
+        id = cur.fetchone()
         cur.close()
         conn.commit()
         print("Successfully inserting new data into database")
@@ -71,6 +72,10 @@ def connect_and_insert_data(table_name, value):
     finally:
         if conn is not None:
             conn.close()
+        try:
+            return id[0]
+        except:
+            return None
 
 
 def choosing_command(key):
@@ -80,36 +85,40 @@ def choosing_command(key):
                                               file_path, 
                                               extension)
                             VALUES(%s, %s, %s, %s) RETURNING id_photo""",
-        "hotel": """INSERT INTO hotel(id_place,link, 
+        "hotel": """INSERT INTO hotel(name, id_place,
+                                                link, 
                                               km_to_place, 
                                               address_city, 
                                               address_postal_code, 
                                               address_street, 
                                               address_number)
-                            VALUES(%s, %s, %s, %s, %s, %s, %s) RETURNING id_hotel""",
-        "communication": """INSERT INTO communication(id_place, link,
+                            VALUES(%s, %s, %s, %s, %s, %s, %s, %s) RETURNING id_hotel""",
+        "transport": """INSERT INTO transport(id_place, link,
                                                         km_to_place,
                                                         type,
                                                         address_city,
                                                         address_latitude,
                                                         address_longitude)
-                            VALUES(%s, %s, %s, %s, %s, %s, %s) RETURNING id_communication""",
-        "attraction": """"INSERT INTO attraction(id_place, id_photo,
+                            VALUES(%s, %s, %s, %s, %s, %s, %s) RETURNING id_transport""",
+        "attraction": """INSERT INTO attraction(id_place, name,
+                                                    city,
+                                                    id_photo,
                                                      type,
                                                      price,
                                                      description,
                                                      open_hours,
                                                      link)
-                            VALUES(%s, %s, %s, %s, %s, %s, %s) RETURNING id_attraction""",
-        "place": """"INSERT INTO place(name, 
-                                                id_photo,
+                            VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING id_attraction""",
+        "place": """INSERT INTO place(id_photo,
+                                                name,
                                                 adding_date,
                                                 localisation_country,
                                                 localisation_region,
                                                 localisation_language,
                                                 localisation_latitude,
-                                                localisation_longitude)
-                            VALUES(%s, %s, %s, %s, %s, %s, %s, %s) RETURNING id_place""",
+                                                localisation_longitude,
+                                                login_admin)
+                            VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING id_place""",
         "weather": """INSERT INTO weather(id_place, weather_date,
                                                   cloudy,
                                                   humidity,
@@ -188,6 +197,80 @@ def register_user(user):
     )
 
 
+def add_hotel_to_database(hotel):
+    connect_and_insert_data(
+        "hotel",
+        (
+            hotel.name,
+            hotel.id_place,
+            hotel.link,
+            hotel.distance,
+            hotel.city,
+            hotel.postal_address,
+            hotel.street,
+            hotel.house_number,
+        ),
+    )
+
+
+def add_attraction_to_database(attraction):
+    connect_and_insert_data(
+        "attraction",
+        (
+            attraction.id_place,
+            attraction.name,
+            attraction.city,
+            attraction.id_photo,
+            attraction.type,
+            attraction.price,
+            attraction.description,
+            attraction.open_hours,
+            attraction.link,
+        ),
+    )
+
+
+def add_transport_to_database(transport):
+    connect_and_insert_data(
+        "transport",
+        (
+            transport.id_place,
+            transport.link,
+            transport.distance,
+            transport.type,
+            transport.city,
+            transport.latitude,
+            transport.longitude,
+        ),
+    )
+
+
+def add_place_to_database(place):
+    connect_and_insert_data(
+        "place",
+        (
+            place.id_photo,
+            place.name,
+            place.create_date,
+            place.country,
+            place.region,
+            place.language,
+            place.latitude,
+            place.longitude,
+            place.admin_login,
+        ),
+    )
+
+
+def add_photo_to_database(photo):
+    w = connect_and_insert_data(
+        "photo",
+        (
+            photo
+        ))
+    return w
+
+
 def connect_and_pull_users(valid, action="login"):
     """Connect to the PostgreSQL database server"""
     conn = None
@@ -259,13 +342,14 @@ def get_hotels(id_place):
         while row is not None:
             hotel = Hotel(
                 id=row[0],
-                id_place=row[1],
-                link=row[2],
-                distance=row[3],
-                city=row[4],
-                postal_address=row[5],
-                street=row[6],
-                house_number=row[7],
+                name=row[1],
+                id_place=row[2],
+                link=row[3],
+                distance=row[4],
+                city=row[5],
+                postal_address=row[6],
+                street=row[7],
+                house_number=row[8],
             )
             hotels.append(hotel)
             row = cur.fetchone()
@@ -307,7 +391,8 @@ def get_transport(id_place):
                 distance=row[3],
                 type=row[4],
                 city=row[5],
-                coordinates="",
+                latitude="",
+                longitude=""
             )
             means_of_transports.append(transport)
             row = cur.fetchone()
@@ -339,7 +424,7 @@ def get_photo(id_photo):
 
         row = cur.fetchone()
         photo = Photo(
-            id=row[0],
+            id_photo=row[0],
             name=row[1],
             file_size=row[2],
             file_path=row[3],
@@ -384,7 +469,8 @@ def get_places(column_name=None, attribute_value=None):
                 country=row[4],
                 region=row[5],
                 language=row[6],
-                coordinates="",
+                latitude="",
+                longitude="",
                 admin_login=row[9],
             )
             places.append(place)
@@ -422,13 +508,15 @@ def get_attraction(id_place=None):
         while row is not None:
             attraction = Attraction(
                 id=row[0],
-                id_place=row[1],
-                id_photo=row[2],
-                type=row[3],
-                price=row[4],
-                description=row[5],
-                open_hours=row[6],
-                link=row[7],
+                name=row[1],
+                city=row[2],
+                id_place=row[3],
+                id_photo=row[4],
+                type=row[5],
+                price=row[6],
+                description=row[7],
+                open_hours=row[8],
+                link=row[9],
             )
             attractions.append(attraction)
             row = cur.fetchone()
@@ -440,3 +528,54 @@ def get_attraction(id_place=None):
         if conn is not None:
             conn.close()
         return attractions  # return list of returned attractions
+
+
+def get_photos_with_param(param):
+    command = f"""SELECT {param}.id_place, {param}.name, ph.*
+                      FROM {param} JOIN photo as ph USING(id_photo)
+                        WHERE ph.id_photo = {param}.id_photo"""
+    conn = None
+    photos = []
+    try:
+        conn = making_connection2()
+
+        # creating a cursor
+        cur = conn.cursor()
+
+        # execute statement
+        cur.execute(command)  # as a parameter SQL code
+        print("Successfully executed SQL code")
+
+        row = cur.fetchone()
+
+        while row is not None:
+            if param == "place":
+                photo = PhotoPlace(
+                    id_place=row[0],
+                    place_name=row[1],
+                    id_photo=row[2],
+                    name=row[3],
+                    file_size=row[4],
+                    file_path=row[5],
+                    file_extension=row[6],
+                )
+            elif param == "attraction":
+                photo = PhotoAttraction(
+                    id_place=row[0],
+                    attraction_name=row[1],
+                    id_photo=row[2],
+                    name=row[3],
+                    file_size=row[4],
+                    file_path=row[5],
+                    file_extension=row[6],
+                )
+            photos.append(photo)
+            row = cur.fetchone()
+
+        cur.close()
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+        return photos  # return list of returned photos
