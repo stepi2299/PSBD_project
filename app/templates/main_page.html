@@ -20,6 +20,7 @@
                     <li><a href="">Kontakt</a></li>
                     <!-- Trigger/Open The Modal -->
 <a href="login"><button id="myBtn" class="Login_button">Zaloguj się</button></a>
+<a href="admin_page"><button id="myBtn" class="Login_button">Panel administartora</button></a>
                     <!-- The Modal -->
 <div id="myModal" class="modal">
 
@@ -84,7 +85,7 @@
             </div>
                 <div style="text-align:center">
                     {% for i in range(at_len) %}
-  <span class="dot" onclick="currentSlide({{i}})"></span>
+  <span class="dot" onclick="currentSlide({i})"></span>
                     {% endfor %}
 </div>
 <section class="social">
