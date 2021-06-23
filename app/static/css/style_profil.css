@@ -15,12 +15,20 @@ header:first-child {
     height: 200px;
     border: 2px solid black;
     margin: 0 auto;
+    
 }
 
 
 
 
-
+.bg_title {
+    display: flex;
+	justify-content: center;
+	align-items: center;
+    line-height: 200px;
+    font-size: 100px;
+    letter-spacing: 20px;
+}
 
 .bg {
     margin-top: 150px;
