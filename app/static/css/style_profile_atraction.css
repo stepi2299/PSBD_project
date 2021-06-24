@@ -72,3 +72,21 @@ table {
     
 }
 
+
+a {
+    height: 50px;
+    width: 25%;
+    display: block;
+    font-size: 20px;
+    color: white;
+    text-decoration: none;
+    margin: 0 auto;
+    border: 1px solid gold;
+    text-align: center;
+    line-height: 50px;
+    background-color: black;   
+}
+a:hover {
+    background-color: gray;
+}
+
