@@ -1,4 +1,4 @@
-from app import app, login, photos
+from app import app, login
 from flask import render_template, redirect, url_for, flash, request
 from flask_login import current_user, login_user, logout_user, login_required
 from .forms import *
@@ -50,7 +50,7 @@ def main_page():
         places=places,
         attractions=attractions,
         pl_len=pl_len,
-        at_len=at_len,
+        at_len=at_len
     )
 
 

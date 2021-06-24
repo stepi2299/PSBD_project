@@ -25,8 +25,12 @@
                      <button class="search-btn">Szukaj</button> <!--Wyszukiwarka nwm czy jest potrzebna ale dodałem -->
                     </div>
                     <!-- Trigger/Open The Modal -->
+{% if current_user.id_group not in [1, 2, 3, 4] %}
 <a href="login"><button id="myBtn" class="Login_button">Zaloguj się</button></a>
+{% endif %}
+{% if current_user.id_group in [3, 4] %}
 <a href="admin_page"><button id="myBtn" class="Login_button">Panel administartora</button></a>
+{% endif %}
                     <!-- The Modal -->
 <div id="myModal" class="modal">
 
@@ -51,7 +55,7 @@
                 
                 </div>
                         </div>
-  </div>
+    </div>
 
 </div>
                 </ul>
