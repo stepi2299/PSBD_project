@@ -11,6 +11,7 @@
 <div class="wrapper">
     <div class="add_place">
         <form action="#" method="post">
+
             {{ form.hidden_tag() }}
                 <p>
                     {{form.type.label}}<br>
@@ -37,6 +38,7 @@
                     {{form.longitude(class="longitude", placeholder="Enter the longitude of the transport")}}
                 </p>
                     {{form.submit(class="btn", value="Add")}}
+
 
         </form>
     </div>

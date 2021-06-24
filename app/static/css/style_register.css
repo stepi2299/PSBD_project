@@ -33,7 +33,7 @@ input {
     height: 20px;
     margin-left:12px
 }
-.btn {
+.btn, .back_btn {
     display: block;
     width: 250px;
     height: 40px;
@@ -46,7 +46,7 @@ input {
     line-height: 40px;
     
 }
-.btn:hover {
+.btn:hover, .back_btn:hover {
     cursor: pointer;
     font-weight: 600;
     background-color: dimgrey;

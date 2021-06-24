@@ -83,6 +83,11 @@ nav ul li a:hover {
     transition-delay: 0.1s;
 
 }
+.search {
+    
+    width: 25%;
+    
+}
 
 .Login_button:hover {
     color: aliceblue;

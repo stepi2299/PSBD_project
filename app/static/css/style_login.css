@@ -12,12 +12,10 @@
 }
 .login {
     width: 300px;
-    height: 400px;
+    height: 500px;
     background-color: black;
     border: 10px solid gold;
-    position: relative;
-    left: 50%;
-    top: 15%;
+    margin: 0 auto;
 }
 label {
     display: block;
@@ -41,7 +39,7 @@ input:focus {
     font-size: 15px;
     
 }
-.btn {
+.btn, .back_btn {
     display: block;
     width: 250px;
     height: 40px;
@@ -54,7 +52,7 @@ input:focus {
     line-height: 40px;
     
 }
-.btn:hover {
+.btn:hover, .back_btn:hover {
     cursor: pointer;
     font-weight: 600;
     background-color: dimgrey;

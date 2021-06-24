@@ -15,10 +15,38 @@ header:first-child {
     height: 200px;
     border: 2px solid black;
     margin: 0 auto;
+    
 }
 
 
 
+
+.bg_title {
+    display: flex;
+	justify-content: center;
+	align-items: center;
+    line-height: 200px;
+    font-size: 100px;
+    letter-spacing: 20px;
+    background-color: black;
+    color: white;
+}
+.back a {
+    height: 50px;
+    width: 25%;
+    display: block;
+    font-size: 20px;
+    color: white;
+    text-decoration: none;
+    margin: 0 auto;
+    border: 1px solid gold;
+    text-align: center;
+    line-height: 50px;
+    background-color: black;   
+}
+.back a:hover {
+    background-color: gray;
+}
 
 
 

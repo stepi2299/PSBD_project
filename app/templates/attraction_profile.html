@@ -11,6 +11,7 @@
     <div class="wrapper">
     <header>
         <p class="title">To warto zobaczyć w {{place.name}}</p>
+        <img class="title_background" src="../example_pictures/live-3104077_1280.jpg" alt="">
     </header>
     <main>
         {% for attraction in attractions %}
@@ -44,7 +45,15 @@
                 <p>{{attraction.description}}</p>
             </div>
         </section>
+        
+        
         {% endfor %}
+        <div class="back">
+            <a class="back_btn" href="../main">
+                Powrót na stronę główną
+            </a>
+
+        </div>
     </main>
 </body>
 </html>
