@@ -28,7 +28,11 @@ header:first-child {
     line-height: 200px;
     font-size: 100px;
     letter-spacing: 20px;
+    background-color: black;
+    color: whitegit;
 }
+
+
 
 .bg {
     margin-top: 150px;
