@@ -131,3 +131,4 @@ dmypy.json
 # Additional not neccessary files
 .idea
 .vscode
+app/static/photos
