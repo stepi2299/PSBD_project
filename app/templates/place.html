@@ -24,6 +24,12 @@
                             <span class="close-hotel">&times;</span>
                             <h2>Dostępne możliwości noclegu</h2>
                             <table>
+                                <tr>
+                                  <th>Hotel Name</th>
+                                  <th>Hotel Adress</th>
+                                  <th>Distance Hotel from centrum</th>
+                                  <th>Link</th>
+                                </tr>
                                 {% for hotel in hotels %}
                                 <tr>
                                   <th>{{hotel.name}}</th>
@@ -99,9 +105,6 @@
             <section class="atraction">
             <div class="bg">
                 <a href="/attraction/{{place.place_id}}"><button class="btn">Atrakcje</button></a>
-                
-
-                    
             </div>
         </section>
 
@@ -119,42 +122,14 @@
                         <th>Ilość km</th>
                         <th>Link</th>
                       </tr>
+                        {% for transport in transports %}
                       <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td>{{transport.type}}</td>
+                        <td>{{transport.city}}</td>
+                        <td>{{transport.distance}}</td>
+                        <td>{{transport.link}}</td>
                       </tr>
-                      <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                      </tr>
-                      <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                      </tr>
-                      <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                      </tr>
-                      <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                      </tr>
-                      <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                      </tr>
+                        {% endfor %}
                       </table>
                   </div>
                 </div>

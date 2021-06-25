@@ -82,20 +82,31 @@ def place(pk):
             }
         )
     transports = get_transport(pk)
+    transports_list = []
+    for transport in transports:
+        transports_list.append(
+            {
+                "type": transport.type,
+                "city": transport.city,
+                "distance": transport.distance,
+                "link": transport.link
+            }
+        )
     return render_template(
         "place.html",
         title="Place Profile",
         place=place_dict,
         photo=photo,
         hotels=hotels_list,
-        transports=transports,
+        transports=transports_list,
     )
 
 
 @app.route("/attraction/<int:pk>")
 def attraction(pk):
     place = get_places("id_place", pk)[0]
-    place_dict = {"name": place.name}
+    photo_place = get_photo(place.id_photo)
+    place_dict = {"name": place.name, "place_photo_path": photo_place.file_path}
     attractions = get_attraction(pk)
     attractions_list = []
     for attraction in attractions:
