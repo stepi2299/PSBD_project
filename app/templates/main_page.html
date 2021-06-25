@@ -25,13 +25,19 @@
                      <button class="search-btn">Szukaj</button> <!--Wyszukiwarka nwm czy jest potrzebna ale dodałem -->
                     </div>
                     <!-- Trigger/Open The Modal -->
-<a href="login"><button id="myBtn" class="Login_button">Zaloguj się</button></a>
-<a href="admin_page"><button id="myBtn" class="Login_button">Panel administartora</button></a>
+{% if current_user.is_authenticated %}
+<a href="logout"><button id="myBtn" class="Login_button">Logout</button></a>
+{% else %}
+<a href="login"><button id="myBtn" class="Login_button">Login</button></a>
+{% endif %}
+{% if current_user.id_group in [3, 4] %}
+<a href="admin_page"><button id="myBtn" class="Login_button">Administrator's Panel</button></a>
+{% endif %}
                     <!-- The Modal -->
 <div id="myModal" class="modal">
 
   <!-- Modal content -->
-  <div class="modal-content">
+ <!--  <div class="modal-content">
     <span class="close">X</span>
     <div class="login">
 <div class="login">
@@ -51,9 +57,9 @@
                 
                 </div>
                         </div>
-  </div>
+    </div>
 
-</div>
+</div> -->
                 </ul>
             </nav>
         </header>
