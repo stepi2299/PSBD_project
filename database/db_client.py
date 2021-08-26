@@ -62,8 +62,10 @@ def connect_and_insert_data(table_name, value):
 
         # execute statement
         cur.execute(command, value)  # as a parameter SQL code
-        print("Successfully executed SQL code")
-        id = cur.fetchone()
+        try:
+            id = cur.fetchone()[0]
+        except:
+            id = None
         cur.close()
         conn.commit()
         print("Successfully inserting new data into database")
@@ -72,10 +74,7 @@ def connect_and_insert_data(table_name, value):
     finally:
         if conn is not None:
             conn.close()
-        try:
-            return id[0]
-        except:
-            return None
+        return id
 
 
 def choosing_command(key):
